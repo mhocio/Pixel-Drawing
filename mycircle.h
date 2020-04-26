@@ -14,7 +14,7 @@ public:
     std::vector<PixelWithColor> getPixels() override {
         std::vector<PixelWithColor> pixels;
 
-        /*int x = R;
+        int x = radius;
         int y = 0;
         int err = 0;
 
@@ -38,31 +38,22 @@ public:
                 x--;
                 err -= 2*x + 1;
             }
-        }*/
-
+        }
+/*
         //void midPointCircleDraw(int x_centre, int y_centre, int r)
         int x = radius, y = 0;
         int x_centre = X;
         int y_centre = Y;
 
-        // Printing the initial point on the axes
-        // after translation
-        //printf("(%d, %d) ", x + x_centre, y + y_centre);
         pixels.push_back(PixelWithColor(x + x_centre, y + y_centre, R, G, B));
 
-        // When radius is zero only a single
-        // point will be printed
         if (radius > 0)
         {
-            //printf("(%d, %d) ",  x + x_centre, -y + y_centre);
-            //printf("(%d, %d) ",  y + x_centre, x + y_centre );
-            //printf("(%d, %d)\n", -y + x_centre, x + y_centre);
             pixels.push_back(PixelWithColor(x + x_centre, -y + y_centre, R, G, B));
             pixels.push_back(PixelWithColor(y + x_centre, x + y_centre , R, G, B));
             pixels.push_back(PixelWithColor(-y + x_centre, x + y_centre, R, G, B));
         }
 
-        // Initialising the value of P
         int P = 1 - radius;
         while (x > y)
         {
@@ -78,10 +69,6 @@ public:
             if (x < y)
                 break;
 
-            //printf("(%d, %d) ",  x + x_centre, y + y_centre  );
-            //printf("(%d, %d) ",  -x + x_centre, y + y_centre );
-            //printf("(%d, %d) ",  x + x_centre, -y + y_centre );
-            //printf("(%d, %d)\n", -x + x_centre, -y + y_centre);
             pixels.push_back(PixelWithColor(x + x_centre, y + y_centre  , R, G, B));
             pixels.push_back(PixelWithColor(-x + x_centre, y + y_centre , R, G, B));
             pixels.push_back(PixelWithColor(x + x_centre, -y + y_centre , R, G, B));
@@ -89,16 +76,12 @@ public:
 
             if (x != y)
             {
-                //printf("(%d, %d) ",  y + x_centre, x + y_centre  );
-                //printf("(%d, %d) ",  -y + x_centre, x + y_centre );
-                //printf("(%d, %d) ",  y + x_centre, -x + y_centre );
-                //printf("(%d, %d)\n", -y + x_centre, -x + y_centre);
                 pixels.push_back(PixelWithColor(y + x_centre, x + y_centre  , R, G, B));
                 pixels.push_back(PixelWithColor(-y + x_centre, x + y_centre , R, G, B));
                 pixels.push_back(PixelWithColor(y + x_centre, -x + y_centre , R, G, B));
                 pixels.push_back(PixelWithColor(-y + x_centre, -x + y_centre, R, G, B));
             }
-        }
+        }*/
 
         qDebug() << "R: " << R << " G: " << G << " B: " << B ;
 
