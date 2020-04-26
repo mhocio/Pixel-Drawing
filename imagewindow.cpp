@@ -69,9 +69,9 @@ bool ImageWindow::setPixel(int x, int y, int R, int G, int B) {
             || x < 0 || y < 0)
         return false;
 
-    *(bits + 3*x + 3*y*image.height()) = R;
+    *(bits + 3*x + 3*y*image.height()) = B;
     *(bits + 3*x + 3*y*image.height() + 1) = G;
-    *(bits + 3*x + 3*y*image.height() + 2) = B;
+    *(bits + 3*x + 3*y*image.height() + 2) = R;
 
     return true;
 }
@@ -174,6 +174,16 @@ std::vector<std::string> ImageWindow::getAllShapesStrings() {
     }
 
     return vec;
+}
+
+void ImageWindow::updateShapeColor(QListWidgetItem* item, QColor color) {
+    for (const auto &shape : shapes) {
+        if (shape->ToString() == item->text().toStdString()) {
+            shape->setColor(color);
+            update();
+            break;
+        }
+    }
 }
 
 void ImageWindow::deleteAllShapes() {

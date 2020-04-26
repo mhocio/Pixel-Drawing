@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <QString>
+#include <QColor>
 #include <string>
 #include "pixelwithcolor.h"
 
@@ -16,6 +17,8 @@ public:
 
     friend bool operator== (const IShape &c1, const IShape &c2);
     friend bool operator!= (const IShape &c1, const IShape &c2);
+
+    void setColor(QColor color);
 
     int R;
     int G;

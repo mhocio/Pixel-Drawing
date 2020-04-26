@@ -8,6 +8,7 @@
 #include <QDebug>
 #include <QMouseEvent>
 #include <cmath>
+#include <QListWidgetItem>
 #include <QGuiApplication>
 #include "myline.h"
 #include "mycircle.h"
@@ -28,6 +29,8 @@ public:
     void deleteAllShapes();
     void displayShapesList();
     std::vector <std::string> getAllShapesStrings();
+
+    void updateShapeColor(QListWidgetItem* item, QColor color);
 
     virtual void mouseDoubleClickEvent(QMouseEvent * mouseEvent);
     virtual void mouseMoveEvent(QMouseEvent * mouseEvent);

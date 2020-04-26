@@ -89,12 +89,29 @@
             <property name="text">
              <string>Delete All</string>
             </property>
+            <property name="default">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="Line" name="line">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
            </widget>
           </item>
           <item>
            <widget class="QPushButton" name="listFiguresButton">
             <property name="text">
              <string>list Figures</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="changeColorButton">
+            <property name="text">
+             <string>Change Color</string>
             </property>
            </widget>
           </item>

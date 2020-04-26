@@ -54,5 +54,25 @@ void MainWindow::updateListWidget() {
 
 void MainWindow::on_listFiguresButton_clicked()
 {
+    qDebug() << Q_FUNC_INFO;
     updateListWidget();
+}
+
+void MainWindow::on_changeColorButton_clicked()
+{
+    qDebug() << Q_FUNC_INFO << "Change Color clicked!!! ";
+    QList<QListWidgetItem*> list = ui->listWidget->selectedItems();
+
+    qDebug() << "Choosing clolor! " << list.count();
+
+    if (list.count() != 1)
+        return;
+
+    QListWidgetItem* item = list.first();
+
+    QColor color = QColorDialog::getColor(Qt::yellow, this);
+    if (color.isValid()) {
+      qDebug() << "Color Choosen : " << item->text() << " " << qBlue(color.rgb());
+      sceneQWidget->updateShapeColor(item, color);
+    }
 }

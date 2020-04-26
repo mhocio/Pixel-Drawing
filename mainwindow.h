@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QColorDialog>
 #include "imagewindow.h"
 
 QT_BEGIN_NAMESPACE
@@ -27,6 +28,8 @@ private slots:
     void on_listFiguresButton_clicked();
 
     void updateListWidget();
+
+    void on_changeColorButton_clicked();
 
 private:
     ImageWindow *sceneQWidget;
