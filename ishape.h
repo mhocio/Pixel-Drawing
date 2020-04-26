@@ -18,7 +18,7 @@ public:
     friend bool operator== (const IShape &c1, const IShape &c2);
     friend bool operator!= (const IShape &c1, const IShape &c2);
 
-    void setColor(QColor color);
+    virtual void setColor(QColor color);
 
     int R;
     int G;

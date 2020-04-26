@@ -10,8 +10,10 @@
 #include <cmath>
 #include <QListWidgetItem>
 #include <QGuiApplication>
+
 #include "myline.h"
 #include "mycircle.h"
+#include "mypolygon.h"
 
 //class MainWindow;
 
@@ -31,6 +33,7 @@ public:
     std::vector <std::string> getAllShapesStrings();
 
     void updateShapeColor(QListWidgetItem* item, QColor color);
+    void deleteShape(QListWidgetItem* item);
 
     virtual void mouseDoubleClickEvent(QMouseEvent * mouseEvent);
     virtual void mouseMoveEvent(QMouseEvent * mouseEvent);
@@ -41,6 +44,13 @@ public:
     void setModeDrawCircle();
     void setModeDrawPolygon();
     void setModeDrawNone();
+
+    void createNewShape() {
+        newShape = true;
+        addPolygon();
+    }
+
+    void addPolygon();
 
 private:
     QImage image;
@@ -58,6 +68,8 @@ private:
     int tmpY1;
 
     std::vector<std::unique_ptr<IShape>> shapes;
+    bool newShape = true;
+    std::unique_ptr<myPolygon> tmpPolygon = nullptr;
 
     //QPainter painter;
 

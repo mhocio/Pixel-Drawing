@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QColorDialog>
+#include <QBrush>
 #include "imagewindow.h"
 
 QT_BEGIN_NAMESPACE
@@ -17,6 +18,7 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     Ui::MainWindow *ui;
+    QListWidgetItem* getListWidgetSelectedItem();
 
 private slots:
     void on_drawLineButton_clicked();
@@ -30,6 +32,10 @@ private slots:
     void updateListWidget();
 
     void on_changeColorButton_clicked();
+
+    void on_deleteFigureButton_clicked();
+
+    void on_drawPolygonButton_clicked();
 
 private:
     ImageWindow *sceneQWidget;

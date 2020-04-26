@@ -55,11 +55,17 @@ void ImageWindow::paintEvent(QPaintEvent*) {
             setPixel(pix.x, pix.y, pix.R, pix.G, pix.B);
     }
 
+    if (tmpPolygon != nullptr) {
+        std::vector<PixelWithColor> pixels = tmpPolygon->getPixels();
+        for (PixelWithColor pix: pixels)
+            setPixel(pix.x, pix.y, pix.R, pix.G, pix.B);
+    }
+
     setPixel(100, 380, 0, 0, 0);
 
     painter.drawImage(0, 0, image);
 
-    qDebug() << "drawImage time:" << time.elapsed();
+    //qDebug() << "drawImage time:" << time.elapsed();
 }
 
 bool ImageWindow::setPixel(int x, int y, int R, int G, int B) {
@@ -141,14 +147,43 @@ void ImageWindow::mouseReleaseEvent(QMouseEvent * mouseEvent) {
             needToUpdate = true;
         }
         break;
+    case POLYGON:
+        qDebug() << Q_FUNC_INFO << "MOUSE POLYGON: " << newShape;
+
+        if (pos().x() < width() && pos().y() < height()
+            && pos().x() >= 0 && pos().y() >= 0) {
+
+            if (newShape) {
+                tmpPolygon = std::make_unique<myPolygon>();
+                tmpPolygon->addPoint(X2, Y2);
+
+                //shapes.push_back(std::move(polygon));
+            } else
+                tmpPolygon->addPoint(X2, Y2);
+
+            needToUpdate = true;
+        }
+        break;
     case NONE:
         break;
     }
 
     if (needToUpdate) {
-        mode = NONE;
+        //mode = NONE;
         update();
         displayShapesList();
+        newShape = false;
+    }
+}
+
+void ImageWindow::addPolygon() {
+    if (tmpPolygon != nullptr) {
+        shapes.push_back(std::move(tmpPolygon));
+        tmpPolygon = nullptr;
+
+        update();
+        displayShapesList();
+        newShape = false;
     }
 }
 
@@ -180,6 +215,16 @@ void ImageWindow::updateShapeColor(QListWidgetItem* item, QColor color) {
     for (const auto &shape : shapes) {
         if (shape->ToString() == item->text().toStdString()) {
             shape->setColor(color);
+            update();
+            break;
+        }
+    }
+}
+
+void ImageWindow::deleteShape(QListWidgetItem* item) {
+    for (const auto &shape : shapes) {
+        if (shape->ToString() == item->text().toStdString()) {
+            shapes.erase(std::remove(shapes.begin(), shapes.end(), shape), shapes.end());
             update();
             break;
         }

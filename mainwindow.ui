@@ -50,6 +50,13 @@
             </property>
            </widget>
           </item>
+          <item>
+           <widget class="QPushButton" name="drawPolygonButton">
+            <property name="text">
+             <string>Draw Polygon</string>
+            </property>
+           </widget>
+          </item>
          </layout>
         </widget>
        </item>
@@ -95,16 +102,16 @@
            </widget>
           </item>
           <item>
-           <widget class="Line" name="line">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+           <widget class="QPushButton" name="listFiguresButton">
+            <property name="text">
+             <string>List Figures</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="listFiguresButton">
-            <property name="text">
-             <string>list Figures</string>
+           <widget class="Line" name="line">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
             </property>
            </widget>
           </item>
@@ -116,14 +123,14 @@
            </widget>
           </item>
           <item>
-           <widget class="QListWidget" name="listWidget"/>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_4">
+           <widget class="QPushButton" name="deleteFigureButton">
             <property name="text">
-             <string>PushButton</string>
+             <string>Delete figure</string>
             </property>
            </widget>
+          </item>
+          <item>
+           <widget class="QListWidget" name="listWidget"/>
           </item>
          </layout>
         </widget>

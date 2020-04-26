@@ -27,6 +27,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_drawLineButton_clicked()
 {
+    sceneQWidget->createNewShape();
     sceneQWidget->setModeDrawLine();
 }
 
@@ -39,6 +40,7 @@ void MainWindow::on_deleteAllButton_clicked()
 
 void MainWindow::on_drawCircleButton_clicked()
 {
+    sceneQWidget->createNewShape();
     sceneQWidget->setModeDrawCircle();
 }
 
@@ -49,6 +51,7 @@ void MainWindow::updateListWidget() {
     for (std::string item: list) {
         ui->listWidget->addItem(item.c_str());
     }
+
     ui->listWidget->update();
 }
 
@@ -58,21 +61,47 @@ void MainWindow::on_listFiguresButton_clicked()
     updateListWidget();
 }
 
-void MainWindow::on_changeColorButton_clicked()
-{
-    qDebug() << Q_FUNC_INFO << "Change Color clicked!!! ";
+QListWidgetItem* MainWindow::getListWidgetSelectedItem() {
     QList<QListWidgetItem*> list = ui->listWidget->selectedItems();
 
-    qDebug() << "Choosing clolor! " << list.count();
 
     if (list.count() != 1)
-        return;
+        return NULL;
 
     QListWidgetItem* item = list.first();
+    item->setForeground(QColor(255, 0, 0)); // sets red text
+
+    /* pItem->setForeground(Qt::red); // sets red text
+    pItem->setBackground(Qt::green);  // sets green background */
+
+    return item;
+}
+
+void MainWindow::on_changeColorButton_clicked()
+{
+    QListWidgetItem* item = getListWidgetSelectedItem();
+
+    if (item == NULL)
+        return;
 
     QColor color = QColorDialog::getColor(Qt::yellow, this);
-    if (color.isValid()) {
-      qDebug() << "Color Choosen : " << item->text() << " " << qBlue(color.rgb());
+
+    if (color.isValid())
       sceneQWidget->updateShapeColor(item, color);
-    }
+}
+
+void MainWindow::on_deleteFigureButton_clicked()
+{
+    QListWidgetItem* item = getListWidgetSelectedItem();
+
+    if (item == NULL)
+        return;
+
+    sceneQWidget->deleteShape(item);
+}
+
+void MainWindow::on_drawPolygonButton_clicked()
+{
+    sceneQWidget->createNewShape();
+    sceneQWidget->setModeDrawPolygon();
 }

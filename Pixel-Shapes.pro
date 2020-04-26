@@ -22,6 +22,7 @@ SOURCES += \
     mainwindow.cpp \
     mycircle.cpp \
     myline.cpp \
+    mypolygon.cpp \
     pixelwithcolor.cpp
 
 HEADERS += \
@@ -30,6 +31,7 @@ HEADERS += \
     mainwindow.h \
     mycircle.h \
     myline.h \
+    mypolygon.h \
     pixelwithcolor.h
 
 FORMS += \
