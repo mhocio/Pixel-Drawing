@@ -47,7 +47,7 @@ void ImageWindow::paintEvent(QPaintEvent*) {
             setPixel(pix.x, pix.y, pix.R, pix.G, pix.B);
     }
 
-    setPixel(100,380,0,0,0);
+    setPixel(100, 380, 0, 0, 0);
 
     painter.drawImage(0, 0, image);
 
@@ -57,7 +57,8 @@ void ImageWindow::paintEvent(QPaintEvent*) {
 bool ImageWindow::setPixel(int x, int y, int R, int G, int B) {
     uchar* bits = image.bits();
 
-    if (x >= image.width() || y >= image.height())
+    if (x >= image.width() || y >= image.height()
+            || x < 0 || y < 0)
         return false;
 
     *(bits + 3*x + 3*y*image.height()) = R;
@@ -79,30 +80,55 @@ void ImageWindow::mousePressEvent(QMouseEvent * mouseEvent) {
     qDebug() << Q_FUNC_INFO << mouseEvent->pos();
 
     switch (mode) {
-    case DRAW:
-        tmpLineX1 = mouseEvent->pos().x();
-        tmpLineY1 = mouseEvent->pos().y();
+    case LINE:
+        tmpX1 = mouseEvent->pos().x();
+        tmpY1 = mouseEvent->pos().y();
+        break;
+    case CIRCLE:
+        tmpX1 = mouseEvent->pos().x();
+        tmpY1 = mouseEvent->pos().y();
         break;
     case NONE:
         break;
     }
 }
 
+float distance(int x1, int y1, int x2, int y2)
+{
+    return sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2) * 1.0);
+}
+
 void ImageWindow::mouseReleaseEvent(QMouseEvent * mouseEvent) {
     qDebug() << Q_FUNC_INFO << mouseEvent->pos();
 
+    int X2 = mouseEvent->pos().x();
+    int Y2 = mouseEvent->pos().y();
+
     switch (mode) {
-    case DRAW:
-        if (pos().x() < width() && pos().y() < height()) {
-            int X2 = mouseEvent->pos().x();
-            int Y2 = mouseEvent->pos().y();
+    case LINE:
+        if (pos().x() < width() && pos().y() < height()
+            && pos().x() >= 0 && pos().y() >= 0) {
 
-            auto line = std::make_unique<MyLine>(tmpLineX1, tmpLineY1, X2, Y2);
+            auto line = std::make_unique<MyLine>(tmpX1, tmpY1, X2, Y2);
 
-            if((abs(Y2 - tmpLineY1) > abs(X2 - tmpLineY1)))
+            if((abs(Y2 - tmpX1) > abs(X2 - tmpY1)))
                 line->swapAB();
 
             shapes.push_back(std::move(line));
+            mode = NONE;
+            update();
+        }
+        break;
+    case CIRCLE:
+        if (pos().x() < width() && pos().y() < height()
+            && pos().x() >= 0 && pos().y() >= 0) {
+
+            int radius = (int)distance(tmpX1, tmpY1, X2, Y2);
+            qDebug() << "radius: " << radius << " X: " << tmpX1 << " Y: " << tmpY1;
+
+            auto circle = std::make_unique<MyCircle>(tmpX1, tmpY1, radius);
+
+            shapes.push_back(std::move(circle));
             mode = NONE;
             update();
         }
@@ -117,6 +143,18 @@ void ImageWindow::deleteAllShapes() {
     update();
 }
 
-void ImageWindow::setModeDraw() {
-    mode = DRAW;
+void ImageWindow::setModeDrawLine() {
+    mode = LINE;
+}
+
+void ImageWindow::setModeDrawCircle() {
+    mode = CIRCLE;
+}
+
+void ImageWindow::setModeDrawPolygon() {
+    mode = POLYGON;
+}
+
+void ImageWindow::setModeDrawNone() {
+    mode = NONE;
 }

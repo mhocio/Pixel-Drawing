@@ -44,23 +44,9 @@
            </widget>
           </item>
           <item>
-           <widget class="QRadioButton" name="radioButton">
+           <widget class="QPushButton" name="drawCircleButton">
             <property name="text">
-             <string>RadioButton</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QRadioButton" name="radioButton_2">
-            <property name="text">
-             <string>RadioButton</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_3">
-            <property name="text">
-             <string/>
+             <string>Draw Circle</string>
             </property>
            </widget>
           </item>

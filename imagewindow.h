@@ -6,7 +6,9 @@
 #include <QTime>
 #include <QDebug>
 #include <QMouseEvent>
+#include <cmath>
 #include "myline.h"
+#include "mycircle.h"
 
 class ImageWindow : public QWidget
 {
@@ -24,16 +26,16 @@ public:
     virtual void mousePressEvent(QMouseEvent * mouseEvent);
     virtual void mouseReleaseEvent(QMouseEvent * mouseEvent);
 
-    void setModeDraw();
-    void setModeCircle();
-    void setModeShape();
-    void setModeNone();
+    void setModeDrawLine();
+    void setModeDrawCircle();
+    void setModeDrawPolygon();
+    void setModeDrawNone();
 
 private:
     QImage image;
     enum drawMode
     {
-        DRAW,
+        LINE,
         CIRCLE,
         POLYGON,
         NONE
@@ -41,8 +43,8 @@ private:
     drawMode mode;
 
     MyLine tmpLine;
-    int tmpLineX1;
-    int tmpLineY1;
+    int tmpX1;
+    int tmpY1;
 
     std::vector<std::unique_ptr<IShape>> shapes;
 

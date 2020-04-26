@@ -20,6 +20,7 @@ SOURCES += \
     ishape.cpp \
     main.cpp \
     mainwindow.cpp \
+    mycircle.cpp \
     myline.cpp \
     pixelwithcolor.cpp
 
@@ -27,6 +28,7 @@ HEADERS += \
     imagewindow.h \
     ishape.h \
     mainwindow.h \
+    mycircle.h \
     myline.h \
     pixelwithcolor.h
 

@@ -24,10 +24,15 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_drawLineButton_clicked()
 {
-    sceneQWidget->setModeDraw();
+    sceneQWidget->setModeDrawLine();
 }
 
 void MainWindow::on_deleteAllButton_clicked()
 {
     sceneQWidget->deleteAllShapes();
+}
+
+void MainWindow::on_drawCircleButton_clicked()
+{
+    sceneQWidget->setModeDrawCircle();
 }

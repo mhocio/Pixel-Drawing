@@ -21,6 +21,8 @@ private slots:
 
     void on_deleteAllButton_clicked();
 
+    void on_drawCircleButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     ImageWindow *sceneQWidget;
