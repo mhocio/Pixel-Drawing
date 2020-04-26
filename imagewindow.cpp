@@ -92,7 +92,9 @@ void ImageWindow::mouseMoveEvent(QMouseEvent * mouseEvent) {
 
 void ImageWindow::mousePressEvent(QMouseEvent * mouseEvent) {
     qDebug() << Q_FUNC_INFO << mouseEvent->pos();
-
+    tmpX1 = mouseEvent->pos().x();
+    tmpY1 = mouseEvent->pos().y();
+    /*
     switch (mode) {
     case LINE:
         tmpX1 = mouseEvent->pos().x();
@@ -104,7 +106,7 @@ void ImageWindow::mousePressEvent(QMouseEvent * mouseEvent) {
         break;
     case NONE:
         break;
-    }
+    }*/
 }
 
 float distance(int x1, int y1, int x2, int y2)
@@ -158,6 +160,49 @@ void ImageWindow::mouseReleaseEvent(QMouseEvent * mouseEvent) {
 
             needToUpdate = true;
         }
+        break;
+    case EDIT_LINE:
+    {
+        unsigned int minimalDistance = 1000000;
+        //MyLine closestLine;
+        //std::unique_ptr<IShape>* closestLine;
+        MyLine *closestLine;
+        bool firstPoint;
+
+        for (auto &shape: shapes) {
+            if (typeid(*shape).name() == typeid(MyLine).name()) {
+                //qDebug() << Q_FUNC_INFO << "EDIT_LINE: " << shape->ToString().c_str();
+                MyLine line = dynamic_cast<MyLine&>(*shape);
+
+                //closestLine = dynamic_cast<MyLine*>(shape.get());
+
+                qDebug() << Q_FUNC_INFO << "line info: " << line.ToString().c_str();
+
+                if (distance(tmpX1, tmpY1, line.x1, line.y1) < minimalDistance) {
+                    minimalDistance = distance(tmpX1, tmpY1, line.x1, line.y1);
+                    firstPoint = true;
+                    closestLine = dynamic_cast<MyLine*>(shape.get());
+                }
+
+                if (distance(tmpX1, tmpY1, line.x2, line.y2) < minimalDistance) {
+                    minimalDistance = distance(tmpX1, tmpY1, line.x2, line.y2);
+                    firstPoint = false;
+                    closestLine = dynamic_cast<MyLine*>(shape.get());
+                }
+            }
+        }
+
+        if (minimalDistance < MOUSE_RADIUS) {
+            if (firstPoint) {
+                closestLine->x1 = X2;
+                closestLine->y1 = Y2;
+            } else {
+                closestLine->x2 = X2;
+                closestLine->y2 = Y2;
+            }
+            needToUpdate = true;
+        }
+    }
         break;
     case NONE:
         break;
@@ -263,4 +308,8 @@ void ImageWindow::setModeDrawPolygon() {
 
 void ImageWindow::setModeDrawNone() {
     mode = NONE;
+}
+
+void ImageWindow::setModeEditLine() {
+    mode = EDIT_LINE;
 }

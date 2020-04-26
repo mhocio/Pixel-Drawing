@@ -7,9 +7,11 @@
 #include <QTime>
 #include <QDebug>
 #include <QMouseEvent>
-#include <cmath>
 #include <QListWidgetItem>
 #include <QGuiApplication>
+
+#include <cmath>
+#include <string.h>
 
 #include "myline.h"
 #include "mycircle.h"
@@ -47,6 +49,8 @@ public:
     void setModeDrawPolygon();
     void setModeDrawNone();
 
+    void setModeEditLine();
+
     void createNewShape() {
         newShape = true;
         addPolygon();
@@ -61,7 +65,8 @@ private:
         LINE,
         CIRCLE,
         POLYGON,
-        NONE
+        NONE,
+        EDIT_LINE
     };
     drawMode mode;
 
@@ -72,6 +77,8 @@ private:
     std::vector<std::unique_ptr<IShape>> shapes;
     bool newShape = true;
     std::unique_ptr<myPolygon> tmpPolygon = nullptr;
+
+    const unsigned int MOUSE_RADIUS = 10;
 
     //QPainter painter;
 

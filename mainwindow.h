@@ -39,6 +39,8 @@ private slots:
 
     void on_endDrawingPolygonButton_clicked();
 
+    void on_editLineButton_clicked();
+
 private:
     ImageWindow *sceneQWidget;
 };

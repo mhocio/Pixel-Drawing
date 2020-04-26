@@ -110,3 +110,9 @@ void MainWindow::on_endDrawingPolygonButton_clicked()
 {
     sceneQWidget->endDrawingPolygon();
 }
+
+void MainWindow::on_editLineButton_clicked()
+{
+    sceneQWidget->createNewShape();
+    sceneQWidget->setModeEditLine();
+}
