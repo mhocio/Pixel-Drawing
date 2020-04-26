@@ -20,6 +20,7 @@ public:
     bool setPixel(int x, int y, int R, int G, int B);
 
     void deleteAllShapes();
+    void displayShapesList();
 
     virtual void mouseDoubleClickEvent(QMouseEvent * mouseEvent);
     virtual void mouseMoveEvent(QMouseEvent * mouseEvent);

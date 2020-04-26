@@ -104,6 +104,8 @@ void ImageWindow::mouseReleaseEvent(QMouseEvent * mouseEvent) {
     int X2 = mouseEvent->pos().x();
     int Y2 = mouseEvent->pos().y();
 
+    bool needToUpdate = false;
+
     switch (mode) {
     case LINE:
         if (pos().x() < width() && pos().y() < height()
@@ -115,8 +117,6 @@ void ImageWindow::mouseReleaseEvent(QMouseEvent * mouseEvent) {
                 line->swapAB();
 
             shapes.push_back(std::move(line));
-            mode = NONE;
-            update();
         }
         break;
     case CIRCLE:
@@ -129,13 +129,21 @@ void ImageWindow::mouseReleaseEvent(QMouseEvent * mouseEvent) {
             auto circle = std::make_unique<MyCircle>(tmpX1, tmpY1, radius);
 
             shapes.push_back(std::move(circle));
-            mode = NONE;
-            update();
         }
         break;
     case NONE:
         break;
     }
+
+    if (needToUpdate) {
+        mode = NONE;
+        update();
+        displayShapesList();
+    }
+}
+
+void ImageWindow::displayShapesList() {
+
 }
 
 void ImageWindow::deleteAllShapes() {
