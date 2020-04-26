@@ -11,6 +11,8 @@ public:
     MyCircle(int X, int Y, int radius);
     int X, Y, radius;
 
+    std::string ToString() const override;
+
     std::vector<PixelWithColor> getPixels() override {
         std::vector<PixelWithColor> pixels;
 
@@ -83,7 +85,7 @@ public:
             }
         }*/
 
-        qDebug() << "R: " << R << " G: " << G << " B: " << B ;
+        //qDebug() << "R: " << R << " G: " << G << " B: " << B ;
 
         return pixels;
     }

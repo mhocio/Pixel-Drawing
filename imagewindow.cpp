@@ -1,16 +1,18 @@
 #include "imagewindow.h"
 
+/*
 ImageWindow::ImageWindow(MainWindow *mw) : mainWindow(mw) {
+    mainWindow = mw;
     image = QImage(width(), height(), QImage::Format_BGR888);  // check if null
     mode = NONE;
-}
+}*/
 
-/*
+
 ImageWindow::ImageWindow(QWidget *parent) : QWidget(parent)
 {
     image = QImage(width(), height(), QImage::Format_BGR888);  // check if null
     mode = NONE;
-}*/
+}
 
 void ImageWindow::_resize() {
     image = QImage(width(), height(), QImage::Format_BGR888);  // check if null
@@ -152,6 +154,7 @@ void ImageWindow::mouseReleaseEvent(QMouseEvent * mouseEvent) {
 
 void ImageWindow::displayShapesList() {
     QWindowList windows = QGuiApplication::topLevelWindows();
+    getAllShapesStrings();
     for (QWindow *window: windows) {
         qDebug() << Q_FUNC_INFO << window->title();
 
@@ -160,6 +163,17 @@ void ImageWindow::displayShapesList() {
             //mainWin
         }*/
     }
+}
+
+std::vector<std::string> ImageWindow::getAllShapesStrings() {
+    std::vector <std::string> vec;
+
+    for (const auto &shape : this->shapes) {
+        //qDebug() << "shape: " << shape->ToString().c_str();
+        vec.push_back(shape->ToString());
+    }
+
+    return vec;
 }
 
 void ImageWindow::deleteAllShapes() {

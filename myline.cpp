@@ -17,3 +17,11 @@ MyLine::MyLine(int x1, int y1, int x2, int y2) {
     this->y1 = y1;
     this->y2 = y2;
 }
+
+std::string MyLine::ToString() const {
+    std::string s = "Line (" + std::to_string(x1) + ", " +
+            std::to_string(y1) + "), (" +
+            std::to_string(x2) + ", " + std::to_string(y2) + ")";
+
+    return s;
+}

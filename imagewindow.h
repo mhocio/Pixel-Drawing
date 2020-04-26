@@ -12,20 +12,14 @@
 #include "myline.h"
 #include "mycircle.h"
 
-class MainWindow;
+//class MainWindow;
 
 class ImageWindow : public QWidget
 {
     Q_OBJECT
 public:
-    //explicit ImageWindow(QWidget *parent = nullptr);
-    ImageWindow(MainWindow *mw);
-
-    MainWindow *getMainWindow() {
-        return mainWindow;
-    }
-
-    MainWindow *mainWindow;
+    explicit ImageWindow(QWidget *parent = nullptr);
+    //ImageWindow(MainWindow *mw);
 
     void paintEvent(QPaintEvent*);
     void _resize();
@@ -33,6 +27,7 @@ public:
 
     void deleteAllShapes();
     void displayShapesList();
+    std::vector <std::string> getAllShapesStrings();
 
     virtual void mouseDoubleClickEvent(QMouseEvent * mouseEvent);
     virtual void mouseMoveEvent(QMouseEvent * mouseEvent);

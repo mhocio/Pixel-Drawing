@@ -24,7 +24,12 @@ private slots:
 
     void on_drawCircleButton_clicked();
 
+    void on_listFiguresButton_clicked();
+
+    void updateListWidget();
+
 private:
     ImageWindow *sceneQWidget;
 };
+
 #endif // MAINWINDOW_H

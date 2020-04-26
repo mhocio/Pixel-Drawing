@@ -92,6 +92,13 @@
            </widget>
           </item>
           <item>
+           <widget class="QPushButton" name="listFiguresButton">
+            <property name="text">
+             <string>list Figures</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QListWidget" name="listWidget"/>
           </item>
           <item>

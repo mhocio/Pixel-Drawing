@@ -19,6 +19,8 @@ public:
         std::swap(x2, y2);
     }
 
+    std::string ToString() const override;
+
     std::vector<PixelWithColor> getPixels() override {
 
         std::vector<PixelWithColor> pixels;
@@ -62,6 +64,9 @@ public:
 
         dx = std::abs(dx);
         dy = std::abs(dy);
+
+        Bx += sx;
+        By += sy;
 
         if(dy > dx)
         {

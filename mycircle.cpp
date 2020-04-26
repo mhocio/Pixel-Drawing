@@ -16,3 +16,10 @@ MyCircle::MyCircle(int X, int Y, int radius) {
     this->Y = Y;
     this->radius = radius;
 }
+
+std::string MyCircle::ToString() const {
+    std::string s = "Circle x: " + std::to_string(X) + " y: " +
+            std::to_string(Y) + " radius: " + std::to_string(radius);
+
+    return s;
+}
