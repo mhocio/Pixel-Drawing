@@ -37,6 +37,8 @@ private slots:
 
     void on_drawPolygonButton_clicked();
 
+    void on_endDrawingPolygonButton_clicked();
+
 private:
     ImageWindow *sceneQWidget;
 };

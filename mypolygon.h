@@ -16,6 +16,10 @@ public:
     void addPoint(int x, int y);
 
     std::vector<std::pair<int,int> > points;
+    int getPointsSize() {
+        return points.size();
+    }
+
     std::vector<MyLine> lines;
 };
 

@@ -35,6 +35,8 @@ public:
     void updateShapeColor(QListWidgetItem* item, QColor color);
     void deleteShape(QListWidgetItem* item);
 
+    void endDrawingPolygon();
+
     virtual void mouseDoubleClickEvent(QMouseEvent * mouseEvent);
     virtual void mouseMoveEvent(QMouseEvent * mouseEvent);
     virtual void mousePressEvent(QMouseEvent * mouseEvent);

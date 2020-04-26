@@ -127,9 +127,6 @@ void ImageWindow::mouseReleaseEvent(QMouseEvent * mouseEvent) {
 
             auto line = std::make_unique<MyLine>(tmpX1, tmpY1, X2, Y2);
 
-            //if((abs(Y2 - tmpX1) > abs(X2 - tmpY1)))
-              //  line->swapAB();
-
             shapes.push_back(std::move(line));
             needToUpdate = true;
         }
@@ -156,8 +153,6 @@ void ImageWindow::mouseReleaseEvent(QMouseEvent * mouseEvent) {
             if (newShape) {
                 tmpPolygon = std::make_unique<myPolygon>();
                 tmpPolygon->addPoint(X2, Y2);
-
-                //shapes.push_back(std::move(polygon));
             } else
                 tmpPolygon->addPoint(X2, Y2);
 
@@ -170,6 +165,24 @@ void ImageWindow::mouseReleaseEvent(QMouseEvent * mouseEvent) {
 
     if (needToUpdate) {
         //mode = NONE;
+        update();
+        displayShapesList();
+        newShape = false;
+    }
+}
+
+void ImageWindow::endDrawingPolygon() {
+    if (tmpPolygon != nullptr) {
+        if (tmpPolygon->points.size() > 2) {
+            MyLine line = MyLine(tmpPolygon->points[tmpPolygon->getPointsSize()-1].first,
+                    tmpPolygon->points[tmpPolygon->getPointsSize()-1].second,
+                    tmpPolygon->points[0].first,
+                    tmpPolygon->points[0].second );
+            tmpPolygon->lines.push_back(line);
+
+            shapes.push_back(std::move(tmpPolygon));
+        }
+        tmpPolygon = nullptr;
         update();
         displayShapesList();
         newShape = false;

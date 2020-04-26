@@ -105,3 +105,8 @@ void MainWindow::on_drawPolygonButton_clicked()
     sceneQWidget->createNewShape();
     sceneQWidget->setModeDrawPolygon();
 }
+
+void MainWindow::on_endDrawingPolygonButton_clicked()
+{
+    sceneQWidget->endDrawingPolygon();
+}
