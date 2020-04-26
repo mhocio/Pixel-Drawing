@@ -3,6 +3,10 @@
 
 #include "ishape.h"
 
+template <typename T> int sgn(T val) {
+    return (T(0) < val) - (val < T(0));
+}
+
 class MyLine : public IShape
 {
 public:
@@ -16,8 +20,9 @@ public:
     }
 
     std::vector<PixelWithColor> getPixels() override {
-        std::vector<PixelWithColor> pixels;
 
+        std::vector<PixelWithColor> pixels;
+/*
         int dx = x2 - x1;
         int dy = y2 - y1;
         int d = 2*dy - dx; // initial value of d
@@ -41,7 +46,62 @@ public:
         }
 
         return pixels;
-    }
+    }*/
+
+    //void drawLine(int Ax,int Ay,int Bx,int By)
+    //{
+        int Ax = x1, Ay = y1, Bx = x2, By = y2;
+        int	y,x,dy,dx,sx,sy;
+        int	decision,incE,incNE;
+
+        dx = Bx - Ax;
+        dy = By - Ay;
+
+        sx = sgn(dx);
+        sy = sgn(dy);
+
+        dx = std::abs(dx);
+        dy = std::abs(dy);
+
+        if(dy > dx)
+        {
+            incE = 2 * dx;
+            incNE = 2 * dx - 2 * dy;
+            decision = 2 * dy - dx;
+
+            x = Ax;
+            y = Ay;
+            do{
+                //setCell(x,y,0.4,0.7,1.0);
+                pixels.push_back(PixelWithColor(x, y, R, G, B));
+                if(decision <= 0)
+                    decision += incE;
+                else{
+                    decision += incNE;
+                    x += sx;
+                }
+                y += sy;
+            }while(y != By);
+        }else{
+            incE = 2 * dy;
+            incNE = 2 * dy - 2 * dx;
+            decision = 2 * dx - dy;
+
+            x = Ax;
+            y = Ay;
+            do{
+                //setCell(x,y,0.4,0.7,1.0);
+                pixels.push_back(PixelWithColor(x, y, R, G, B));
+                if(decision <= 0)
+                    decision += incE;
+                else{
+                    decision += incNE;
+                    y += sy;
+                }
+                x += sx;
+            }while(x != Bx);
+        }
+    //}
 
     /*
     std::function<PixelWithColor()> generator = [this]{
@@ -71,7 +131,8 @@ public:
         };
     }();*/
 
-
+    return pixels;
+    }
 };
 
 #endif // MYLINE_H

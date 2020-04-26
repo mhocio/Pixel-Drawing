@@ -1,10 +1,16 @@
 #include "imagewindow.h"
 
+ImageWindow::ImageWindow(MainWindow *mw) : mainWindow(mw) {
+    image = QImage(width(), height(), QImage::Format_BGR888);  // check if null
+    mode = NONE;
+}
+
+/*
 ImageWindow::ImageWindow(QWidget *parent) : QWidget(parent)
 {
     image = QImage(width(), height(), QImage::Format_BGR888);  // check if null
     mode = NONE;
-}
+}*/
 
 void ImageWindow::_resize() {
     image = QImage(width(), height(), QImage::Format_BGR888);  // check if null
@@ -113,10 +119,11 @@ void ImageWindow::mouseReleaseEvent(QMouseEvent * mouseEvent) {
 
             auto line = std::make_unique<MyLine>(tmpX1, tmpY1, X2, Y2);
 
-            if((abs(Y2 - tmpX1) > abs(X2 - tmpY1)))
-                line->swapAB();
+            //if((abs(Y2 - tmpX1) > abs(X2 - tmpY1)))
+              //  line->swapAB();
 
             shapes.push_back(std::move(line));
+            needToUpdate = true;
         }
         break;
     case CIRCLE:
@@ -129,6 +136,7 @@ void ImageWindow::mouseReleaseEvent(QMouseEvent * mouseEvent) {
             auto circle = std::make_unique<MyCircle>(tmpX1, tmpY1, radius);
 
             shapes.push_back(std::move(circle));
+            needToUpdate = true;
         }
         break;
     case NONE:
@@ -143,7 +151,15 @@ void ImageWindow::mouseReleaseEvent(QMouseEvent * mouseEvent) {
 }
 
 void ImageWindow::displayShapesList() {
+    QWindowList windows = QGuiApplication::topLevelWindows();
+    for (QWindow *window: windows) {
+        qDebug() << Q_FUNC_INFO << window->title();
 
+        /*if (window->title() == "MainWindow") {
+            auto mainWin = qobject_cast<MainWindow*>(window);
+            //mainWin
+        }*/
+    }
 }
 
 void ImageWindow::deleteAllShapes() {

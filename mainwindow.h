@@ -15,6 +15,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    Ui::MainWindow *ui;
 
 private slots:
     void on_drawLineButton_clicked();
@@ -24,7 +25,6 @@ private slots:
     void on_drawCircleButton_clicked();
 
 private:
-    Ui::MainWindow *ui;
     ImageWindow *sceneQWidget;
 };
 #endif // MAINWINDOW_H

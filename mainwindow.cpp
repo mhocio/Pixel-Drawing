@@ -7,7 +7,9 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    sceneQWidget = new ImageWindow(ui->paintArea);
+    //sceneQWidget = new ImageWindow(ui->paintArea);
+    sceneQWidget = new ImageWindow(this);
+
     sceneQWidget->resize(ui->paintArea->width(), ui->paintArea->height());
     sceneQWidget->_resize();
 
