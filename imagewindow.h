@@ -50,6 +50,7 @@ public:
     void setModeDrawNone();
 
     void setModeEditLine();
+    void setModeMoveCircle();
 
     void createNewShape() {
         newShape = true;
@@ -57,6 +58,8 @@ public:
     }
 
     void addPolygon();
+
+    const unsigned int MOUSE_RADIUS = 100;
 
 private:
     QImage image;
@@ -66,11 +69,11 @@ private:
         CIRCLE,
         POLYGON,
         NONE,
-        EDIT_LINE
+        EDIT_LINE,
+        MOVE_CIRCLE
     };
     drawMode mode;
 
-    MyLine tmpLine;
     int tmpX1;
     int tmpY1;
 
@@ -78,9 +81,14 @@ private:
     bool newShape = true;
     std::unique_ptr<myPolygon> tmpPolygon = nullptr;
 
-    const unsigned int MOUSE_RADIUS = 10;
+    // used to EDIT_LINE
+    unsigned int minimalDistance;
+    MyLine *closestLine;
+    bool firstPoint;
 
-    //QPainter painter;
+    // used to EDIT_CIRCLE
+    MyCircle *closestCircle;
+
 
 signals:
 

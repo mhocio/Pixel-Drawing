@@ -7,6 +7,10 @@ ImageWindow::ImageWindow(MainWindow *mw) : mainWindow(mw) {
     mode = NONE;
 }*/
 
+float distance(int x1, int y1, int x2, int y2)
+{
+    return sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2) * 1.0);
+}
 
 ImageWindow::ImageWindow(QWidget *parent) : QWidget(parent)
 {
@@ -88,30 +92,101 @@ void ImageWindow::mouseDoubleClickEvent(QMouseEvent * mouseEvent) {
 
 void ImageWindow::mouseMoveEvent(QMouseEvent * mouseEvent) {
     qDebug() << Q_FUNC_INFO << mouseEvent->pos();
+
+    int X2 = mouseEvent->pos().x();
+    int Y2 = mouseEvent->pos().y();
+
+    bool needToUpdate = false;
+
+    switch(mode) {
+    case EDIT_LINE:
+    {
+        if (minimalDistance < MOUSE_RADIUS) {
+            if (firstPoint) {
+                closestLine->x1 = X2;
+                closestLine->y1 = Y2;
+            } else {
+                closestLine->x2 = X2;
+                closestLine->y2 = Y2;
+            }
+            needToUpdate = true;
+        }
+    }
+        break;
+    case MOVE_CIRCLE:
+    {
+        if (minimalDistance < MOUSE_RADIUS) {
+            closestCircle->X = X2;
+            closestCircle->Y = Y2;
+            needToUpdate = true;
+        }
+    }
+        break;
+    case NONE:
+        break;
+    }
+
+    if (needToUpdate) {
+        //mode = NONE;
+        update();
+        displayShapesList();
+        newShape = false;
+    }
 }
 
 void ImageWindow::mousePressEvent(QMouseEvent * mouseEvent) {
     qDebug() << Q_FUNC_INFO << mouseEvent->pos();
     tmpX1 = mouseEvent->pos().x();
     tmpY1 = mouseEvent->pos().y();
-    /*
+
     switch (mode) {
-    case LINE:
-        tmpX1 = mouseEvent->pos().x();
-        tmpY1 = mouseEvent->pos().y();
+    case EDIT_LINE:
+    {
+        minimalDistance = 1000000;
+
+        for (auto &shape: shapes) {
+            if (typeid(*shape).name() == typeid(MyLine).name()) {
+
+                MyLine line = dynamic_cast<MyLine&>(*shape);
+
+                qDebug() << Q_FUNC_INFO << "line info: " << line.ToString().c_str();
+
+                if (distance(tmpX1, tmpY1, line.x1, line.y1) < minimalDistance) {
+                    minimalDistance = distance(tmpX1, tmpY1, line.x1, line.y1);
+                    firstPoint = true;
+                    closestLine = dynamic_cast<MyLine*>(shape.get());
+                }
+
+                if (distance(tmpX1, tmpY1, line.x2, line.y2) < minimalDistance) {
+                    minimalDistance = distance(tmpX1, tmpY1, line.x2, line.y2);
+                    firstPoint = false;
+                    closestLine = dynamic_cast<MyLine*>(shape.get());
+                }
+            }
+        }
+    }
         break;
-    case CIRCLE:
-        tmpX1 = mouseEvent->pos().x();
-        tmpY1 = mouseEvent->pos().y();
+    case MOVE_CIRCLE:
+    {
+        minimalDistance = 1000000;
+
+        for (auto &shape: shapes) {
+            if (typeid(*shape).name() == typeid(MyCircle).name()) {
+
+                MyCircle circle = dynamic_cast<MyCircle&>(*shape);
+
+                if (distance(tmpX1, tmpY1, circle.X, circle.Y) < minimalDistance) {
+                    minimalDistance = distance(tmpX1, tmpY1, circle.X, circle.Y);
+                    closestCircle = dynamic_cast<MyCircle*>(shape.get());
+                }
+
+            }
+        }
+    }
         break;
     case NONE:
         break;
-    }*/
-}
-
-float distance(int x1, int y1, int x2, int y2)
-{
-    return sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2) * 1.0);
+    }
 }
 
 void ImageWindow::mouseReleaseEvent(QMouseEvent * mouseEvent) {
@@ -163,35 +238,6 @@ void ImageWindow::mouseReleaseEvent(QMouseEvent * mouseEvent) {
         break;
     case EDIT_LINE:
     {
-        unsigned int minimalDistance = 1000000;
-        //MyLine closestLine;
-        //std::unique_ptr<IShape>* closestLine;
-        MyLine *closestLine;
-        bool firstPoint;
-
-        for (auto &shape: shapes) {
-            if (typeid(*shape).name() == typeid(MyLine).name()) {
-                //qDebug() << Q_FUNC_INFO << "EDIT_LINE: " << shape->ToString().c_str();
-                MyLine line = dynamic_cast<MyLine&>(*shape);
-
-                //closestLine = dynamic_cast<MyLine*>(shape.get());
-
-                qDebug() << Q_FUNC_INFO << "line info: " << line.ToString().c_str();
-
-                if (distance(tmpX1, tmpY1, line.x1, line.y1) < minimalDistance) {
-                    minimalDistance = distance(tmpX1, tmpY1, line.x1, line.y1);
-                    firstPoint = true;
-                    closestLine = dynamic_cast<MyLine*>(shape.get());
-                }
-
-                if (distance(tmpX1, tmpY1, line.x2, line.y2) < minimalDistance) {
-                    minimalDistance = distance(tmpX1, tmpY1, line.x2, line.y2);
-                    firstPoint = false;
-                    closestLine = dynamic_cast<MyLine*>(shape.get());
-                }
-            }
-        }
-
         if (minimalDistance < MOUSE_RADIUS) {
             if (firstPoint) {
                 closestLine->x1 = X2;
@@ -312,4 +358,8 @@ void ImageWindow::setModeDrawNone() {
 
 void ImageWindow::setModeEditLine() {
     mode = EDIT_LINE;
+}
+
+void ImageWindow::setModeMoveCircle() {
+    mode = MOVE_CIRCLE;
 }

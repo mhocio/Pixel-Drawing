@@ -41,6 +41,8 @@ private slots:
 
     void on_editLineButton_clicked();
 
+    void on_moveCircleButton_clicked();
+
 private:
     ImageWindow *sceneQWidget;
 };

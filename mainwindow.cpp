@@ -116,3 +116,9 @@ void MainWindow::on_editLineButton_clicked()
     sceneQWidget->createNewShape();
     sceneQWidget->setModeEditLine();
 }
+
+void MainWindow::on_moveCircleButton_clicked()
+{
+    sceneQWidget->createNewShape();
+    sceneQWidget->setModeMoveCircle();
+}
