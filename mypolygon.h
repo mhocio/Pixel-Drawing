@@ -15,6 +15,9 @@ public:
     std::pair<int, int> compute2DCentroid();
 
     void addPoint(int x, int y);
+    void move(int dx, int dy);
+
+    void setFinished();
 
     std::vector<std::pair<int,int> > points;
     int getPointsSize() {
@@ -22,6 +25,7 @@ public:
     }
 
     std::vector<MyLine> lines;
+    bool isFinished = false;
 };
 
 #endif // MYPOLYGON_H

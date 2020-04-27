@@ -140,3 +140,10 @@ void MainWindow::on_resizeCircleButton_clicked()
     sceneQWidget->setModeResizeCircle();
     updateStatusBar();
 }
+
+void MainWindow::on_movePolygonButton_clicked()
+{
+    sceneQWidget->createNewShape();
+    sceneQWidget->setModeMovePolygon();
+    updateStatusBar();
+}

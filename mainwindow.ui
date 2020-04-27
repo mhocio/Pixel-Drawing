@@ -57,6 +57,9 @@
             <property name="text">
              <string>Draw</string>
             </property>
+            <property name="default">
+             <bool>true</bool>
+            </property>
            </widget>
           </item>
           <item>
@@ -93,6 +96,9 @@
            <widget class="QPushButton" name="drawCircleButton">
             <property name="text">
              <string>Draw</string>
+            </property>
+            <property name="default">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
@@ -138,12 +144,22 @@
             <property name="text">
              <string>Start Drawing</string>
             </property>
+            <property name="default">
+             <bool>true</bool>
+            </property>
            </widget>
           </item>
           <item>
            <widget class="QPushButton" name="endDrawingPolygonButton">
             <property name="text">
              <string>Close Figure</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="movePolygonButton">
+            <property name="text">
+             <string>Move</string>
             </property>
            </widget>
           </item>

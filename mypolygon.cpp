@@ -36,6 +36,21 @@ void myPolygon::addPoint(int x, int y) {
     }
 }
 
+void myPolygon::move(int dx, int dy) {
+    std::vector<std::pair<int,int> > oldPoints = points;
+    points.clear();
+    lines.clear();
+
+    for (auto point: oldPoints) {
+        addPoint(point.first + dx, point.second + dy);
+    }
+
+    if (isFinished) {
+        isFinished = false;
+        setFinished();
+    }
+}
+
 std::vector<PixelWithColor> myPolygon::getPixels() {
     std::vector<PixelWithColor> pixels;
 
@@ -49,6 +64,19 @@ std::vector<PixelWithColor> myPolygon::getPixels() {
 
     return pixels;
 };
+
+void myPolygon::setFinished() {
+    if (isFinished)
+        return;
+
+    MyLine line = MyLine(points[getPointsSize()-1].first,
+            points[getPointsSize()-1].second,
+            points[0].first, points[0].second );
+
+    lines.push_back(line);
+
+    isFinished = true;
+}
 
 std::pair<int, int> myPolygon::compute2DCentroid() {
     std::pair<int, int> centroid = std::make_pair<int, int> (0, 0);
@@ -69,7 +97,7 @@ std::pair<int, int> myPolygon::compute2DCentroid() {
         a = x0*y1 - x1*y0;
         signedArea += a;
         centroid.first += (x0 + x1)*a;
-        centroid.first += (y0 + y1)*a;
+        centroid.second += (y0 + y1)*a;
     }
 
     signedArea *= 0.5;

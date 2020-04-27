@@ -130,6 +130,18 @@ void ImageWindow::mouseMoveEvent(QMouseEvent * mouseEvent) {
         }
     }
         break;
+    case MOVE_POLYGON:
+    {
+        if (minimalDistance < MOUSE_RADIUS) {
+            std::pair<int, int> centre = closestPolygon->compute2DCentroid();
+            int dx = X2 - centre.first;
+            int dy = Y2 - centre.second;
+
+            closestPolygon->move(dx, dy);
+            needToUpdate = true;
+        }
+    }
+        break;
     case NONE:
         break;
     }
@@ -137,7 +149,6 @@ void ImageWindow::mouseMoveEvent(QMouseEvent * mouseEvent) {
     if (needToUpdate) {
         //mode = NONE;
         update();
-        displayShapesList();
         newShape = false;
     }
 }
@@ -156,8 +167,6 @@ void ImageWindow::mousePressEvent(QMouseEvent * mouseEvent) {
             if (typeid(*shape).name() == typeid(MyLine).name()) {
 
                 MyLine line = dynamic_cast<MyLine&>(*shape);
-
-                qDebug() << Q_FUNC_INFO << "line info: " << line.ToString().c_str();
 
                 if (distance(tmpX1, tmpY1, line.x1, line.y1) < minimalDistance) {
                     minimalDistance = distance(tmpX1, tmpY1, line.x1, line.y1);
@@ -203,6 +212,28 @@ void ImageWindow::mousePressEvent(QMouseEvent * mouseEvent) {
                 if (d < minimalDistance) {
                     minimalDistance = d;
                     closestCircle = dynamic_cast<MyCircle*>(shape.get());
+                }
+
+            }
+        }
+    }
+        break;
+    case MOVE_POLYGON:
+    {
+        minimalDistance = 1000000;
+        for (auto &shape: shapes) {
+            if (typeid(*shape).name() == typeid(myPolygon).name()) {
+
+                myPolygon polygon = dynamic_cast<myPolygon&>(*shape);
+                qDebug() << Q_FUNC_INFO << "CENTRE " << "x: " << polygon.compute2DCentroid().first
+                         << " y: " << polygon.compute2DCentroid().second;
+
+                std::pair<int, int> polygonCentre = polygon.compute2DCentroid();
+                unsigned int d = distance(tmpX1, tmpY1, polygonCentre.first, polygonCentre.second);
+
+                if (d < minimalDistance) {
+                    minimalDistance = d;
+                    closestPolygon = dynamic_cast<myPolygon*>(shape.get());
                 }
 
             }
@@ -282,7 +313,6 @@ void ImageWindow::mouseReleaseEvent(QMouseEvent * mouseEvent) {
     if (needToUpdate) {
         //mode = NONE;
         update();
-        displayShapesList();
         newShape = false;
     }
 }
@@ -290,18 +320,14 @@ void ImageWindow::mouseReleaseEvent(QMouseEvent * mouseEvent) {
 void ImageWindow::endDrawingPolygon() {
     if (tmpPolygon != nullptr) {
         if (tmpPolygon->points.size() > 2) {
-            MyLine line = MyLine(tmpPolygon->points[tmpPolygon->getPointsSize()-1].first,
-                    tmpPolygon->points[tmpPolygon->getPointsSize()-1].second,
-                    tmpPolygon->points[0].first,
-                    tmpPolygon->points[0].second );
-            tmpPolygon->lines.push_back(line);
 
+            tmpPolygon->setFinished();
             shapes.push_back(std::move(tmpPolygon));
         }
         tmpPolygon = nullptr;
         update();
-        displayShapesList();
         newShape = false;
+        mode = NONE;
     }
 }
 
@@ -309,23 +335,9 @@ void ImageWindow::addPolygon() {
     if (tmpPolygon != nullptr) {
         shapes.push_back(std::move(tmpPolygon));
         tmpPolygon = nullptr;
-
         update();
-        displayShapesList();
         newShape = false;
-    }
-}
-
-void ImageWindow::displayShapesList() {
-    QWindowList windows = QGuiApplication::topLevelWindows();
-    getAllShapesStrings();
-    for (QWindow *window: windows) {
-        qDebug() << Q_FUNC_INFO << window->title();
-
-        /*if (window->title() == "MainWindow") {
-            auto mainWin = qobject_cast<MainWindow*>(window);
-            //mainWin
-        }*/
+        mode = NONE;
     }
 }
 
@@ -370,6 +382,7 @@ QString ImageWindow::getMode() {
         case EDIT_LINE: return "Editing line";
         case MOVE_CIRCLE: return "Moving circle";
         case RESIZE_CIRCLE: return "Resizing circle";
+        case MOVE_POLYGON: return "Moving Polygon";
     }
 }
 
@@ -404,4 +417,8 @@ void ImageWindow::setModeMoveCircle() {
 
 void ImageWindow::setModeResizeCircle() {
     mode = RESIZE_CIRCLE;
+}
+
+void ImageWindow::setModeMovePolygon() {
+    mode = MOVE_POLYGON;
 }

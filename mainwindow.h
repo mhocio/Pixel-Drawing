@@ -47,6 +47,8 @@ private slots:
 
     void updateStatusBar();
 
+    void on_movePolygonButton_clicked();
+
 private:
     ImageWindow *sceneQWidget;
 };

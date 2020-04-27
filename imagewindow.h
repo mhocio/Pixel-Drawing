@@ -31,7 +31,6 @@ public:
     bool setPixel(int x, int y, int R, int G, int B);
 
     void deleteAllShapes();
-    void displayShapesList();
     std::vector <std::string> getAllShapesStrings();
 
     void updateShapeColor(QListWidgetItem* item, QColor color);
@@ -52,6 +51,7 @@ public:
     void setModeEditLine();
     void setModeMoveCircle();
     void setModeResizeCircle();
+    void setModeMovePolygon();
 
     QString getMode();
 
@@ -74,7 +74,8 @@ private:
         NONE,
         EDIT_LINE,
         MOVE_CIRCLE,
-        RESIZE_CIRCLE
+        RESIZE_CIRCLE,
+        MOVE_POLYGON
     };
     drawMode mode;
 
@@ -92,6 +93,9 @@ private:
 
     // used to EDIT_CIRCLE
     MyCircle *closestCircle;
+
+    // used to MOVE_POLYGON
+    myPolygon *closestPolygon;
 
 
 signals:
