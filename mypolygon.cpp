@@ -49,3 +49,32 @@ std::vector<PixelWithColor> myPolygon::getPixels() {
 
     return pixels;
 };
+
+std::pair<int, int> myPolygon::compute2DCentroid() {
+    std::pair<int, int> centroid = std::make_pair<int, int> (0, 0);
+
+    double signedArea = 0.0;
+    double x0 = 0.0; // Current vertex X
+    double y0 = 0.0; // Current vertex Y
+    double x1 = 0.0; // Next vertex X
+    double y1 = 0.0; // Next vertex Y
+    double a = 0.0;  // Partial signed area
+
+    unsigned int vertexCount = points.size();
+    for (unsigned int i = 0; i < vertexCount; ++i) {
+        x0 = points[i].first;
+        y0 = points[i].second;
+        x1 = points[(i+1) % vertexCount].first;
+        y1 = points[(i+1) % vertexCount].second;
+        a = x0*y1 - x1*y0;
+        signedArea += a;
+        centroid.first += (x0 + x1)*a;
+        centroid.first += (y0 + y1)*a;
+    }
+
+    signedArea *= 0.5;
+    centroid.first /= (6.0*signedArea);
+    centroid.second /= (6.0*signedArea);
+
+    return centroid;
+}

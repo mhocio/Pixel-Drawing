@@ -360,6 +360,19 @@ void ImageWindow::deleteShape(QListWidgetItem* item) {
     }
 }
 
+QString ImageWindow::getMode() {
+    switch (mode)
+    {
+        case LINE: return "Drawing line";
+        case CIRCLE: return "Drawing cyrcle";
+        case POLYGON: return "Drawing polygon";
+        case NONE: return "";
+        case EDIT_LINE: return "Editing line";
+        case MOVE_CIRCLE: return "Moving circle";
+        case RESIZE_CIRCLE: return "Resizing circle";
+    }
+}
+
 void ImageWindow::deleteAllShapes() {
     shapes.clear();
     update();

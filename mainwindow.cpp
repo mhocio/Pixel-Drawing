@@ -20,6 +20,11 @@ MainWindow::MainWindow(QWidget *parent)
     sceneQWidget->show();
 }
 
+void MainWindow::updateStatusBar() {
+    ui->statusbar->showMessage(sceneQWidget->getMode());
+    ui->statusbar->update();
+}
+
 MainWindow::~MainWindow()
 {
     delete ui;
@@ -29,6 +34,7 @@ void MainWindow::on_drawLineButton_clicked()
 {
     sceneQWidget->createNewShape();
     sceneQWidget->setModeDrawLine();
+    updateStatusBar();
 }
 
 void MainWindow::on_deleteAllButton_clicked()
@@ -42,6 +48,7 @@ void MainWindow::on_drawCircleButton_clicked()
 {
     sceneQWidget->createNewShape();
     sceneQWidget->setModeDrawCircle();
+    updateStatusBar();
 }
 
 void MainWindow::updateListWidget() {
@@ -104,27 +111,32 @@ void MainWindow::on_drawPolygonButton_clicked()
 {
     sceneQWidget->createNewShape();
     sceneQWidget->setModeDrawPolygon();
+    updateStatusBar();
 }
 
 void MainWindow::on_endDrawingPolygonButton_clicked()
 {
     sceneQWidget->endDrawingPolygon();
+    updateStatusBar();
 }
 
 void MainWindow::on_editLineButton_clicked()
 {
     sceneQWidget->createNewShape();
     sceneQWidget->setModeEditLine();
+    updateStatusBar();
 }
 
 void MainWindow::on_moveCircleButton_clicked()
 {
     sceneQWidget->createNewShape();
     sceneQWidget->setModeMoveCircle();
+    updateStatusBar();
 }
 
 void MainWindow::on_resizeCircleButton_clicked()
 {
     sceneQWidget->createNewShape();
     sceneQWidget->setModeResizeCircle();
+    updateStatusBar();
 }

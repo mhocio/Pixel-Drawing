@@ -45,6 +45,8 @@ private slots:
 
     void on_resizeCircleButton_clicked();
 
+    void updateStatusBar();
+
 private:
     ImageWindow *sceneQWidget;
 };

@@ -53,6 +53,8 @@ public:
     void setModeMoveCircle();
     void setModeResizeCircle();
 
+    QString getMode();
+
     void createNewShape() {
         newShape = true;
         addPolygon();
