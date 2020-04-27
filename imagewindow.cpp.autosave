@@ -242,7 +242,13 @@ void ImageWindow::mousePressEvent(QMouseEvent * mouseEvent) {
         break;
     case PIZZA:
     {
-
+        if (pizzaPointNumber == 0) {
+            
+        } else if (pizzaPointNumber == 1) {
+            
+        } else if (pizzaPointNumber == 2) {
+            
+        }
     }
         break;
     case NONE:

@@ -159,3 +159,15 @@ void MainWindow::on_setThicknessButton_clicked()
 
     sceneQWidget->setShapeThickness(item, ui->spinBoxThickness->value());
 }
+
+void MainWindow::on_brushThickness_valueChanged(int arg1)
+{
+    sceneQWidget->updateBrushThickness(ui->brushThickness->value());
+}
+
+void MainWindow::on_pizzaSliceButton_clicked()
+{
+    sceneQWidget->createNewShape();
+    sceneQWidget->setModeDrawPizza();
+    updateStatusBar();
+}

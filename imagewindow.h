@@ -37,6 +37,9 @@ public:
     void deleteShape(QListWidgetItem* item);
     void setShapeThickness(QListWidgetItem*item, int thickness);
 
+    void updateBrushThickness(int t);
+    unsigned int brushThickness = 1;
+
     void endDrawingPolygon();
 
     virtual void mouseDoubleClickEvent(QMouseEvent * mouseEvent);
@@ -53,6 +56,8 @@ public:
     void setModeMoveCircle();
     void setModeResizeCircle();
     void setModeMovePolygon();
+
+    void setModeDrawPizza();
 
     QString getMode();
 
@@ -76,7 +81,8 @@ private:
         EDIT_LINE,
         MOVE_CIRCLE,
         RESIZE_CIRCLE,
-        MOVE_POLYGON
+        MOVE_POLYGON,
+        PIZZA
     };
     drawMode mode;
 
@@ -97,6 +103,9 @@ private:
 
     // used to MOVE_POLYGON
     myPolygon *closestPolygon;
+
+    // used to PIZZA
+    int pizzaPointNumber;
 
 
 signals:
