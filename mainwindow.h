@@ -43,6 +43,8 @@ private slots:
 
     void on_moveCircleButton_clicked();
 
+    void on_resizeCircleButton_clicked();
+
 private:
     ImageWindow *sceneQWidget;
 };

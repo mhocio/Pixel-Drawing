@@ -51,6 +51,7 @@ public:
 
     void setModeEditLine();
     void setModeMoveCircle();
+    void setModeResizeCircle();
 
     void createNewShape() {
         newShape = true;
@@ -70,7 +71,8 @@ private:
         POLYGON,
         NONE,
         EDIT_LINE,
-        MOVE_CIRCLE
+        MOVE_CIRCLE,
+        RESIZE_CIRCLE
     };
     drawMode mode;
 

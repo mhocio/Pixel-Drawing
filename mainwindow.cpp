@@ -122,3 +122,9 @@ void MainWindow::on_moveCircleButton_clicked()
     sceneQWidget->createNewShape();
     sceneQWidget->setModeMoveCircle();
 }
+
+void MainWindow::on_resizeCircleButton_clicked()
+{
+    sceneQWidget->createNewShape();
+    sceneQWidget->setModeResizeCircle();
+}

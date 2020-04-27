@@ -122,6 +122,14 @@ void ImageWindow::mouseMoveEvent(QMouseEvent * mouseEvent) {
         }
     }
         break;
+    case RESIZE_CIRCLE: {
+        if (minimalDistance < MOUSE_RADIUS) {
+            closestCircle->radius = distance(closestCircle->X, closestCircle->Y,
+                                        X2, Y2);
+            needToUpdate = true;
+        }
+    }
+        break;
     case NONE:
         break;
     }
@@ -169,7 +177,6 @@ void ImageWindow::mousePressEvent(QMouseEvent * mouseEvent) {
     case MOVE_CIRCLE:
     {
         minimalDistance = 1000000;
-
         for (auto &shape: shapes) {
             if (typeid(*shape).name() == typeid(MyCircle).name()) {
 
@@ -177,6 +184,24 @@ void ImageWindow::mousePressEvent(QMouseEvent * mouseEvent) {
 
                 if (distance(tmpX1, tmpY1, circle.X, circle.Y) < minimalDistance) {
                     minimalDistance = distance(tmpX1, tmpY1, circle.X, circle.Y);
+                    closestCircle = dynamic_cast<MyCircle*>(shape.get());
+                }
+
+            }
+        }
+    }
+        break;
+    case RESIZE_CIRCLE:
+    {
+        minimalDistance = 1000000;
+        for (auto &shape: shapes) {
+            if (typeid(*shape).name() == typeid(MyCircle).name()) {
+
+                MyCircle circle = dynamic_cast<MyCircle&>(*shape);
+
+                unsigned int d = std::abs(distance(tmpX1, tmpY1, circle.X, circle.Y) - circle.radius);
+                if (d < minimalDistance) {
+                    minimalDistance = d;
                     closestCircle = dynamic_cast<MyCircle*>(shape.get());
                 }
 
@@ -362,4 +387,8 @@ void ImageWindow::setModeEditLine() {
 
 void ImageWindow::setModeMoveCircle() {
     mode = MOVE_CIRCLE;
+}
+
+void ImageWindow::setModeResizeCircle() {
+    mode = RESIZE_CIRCLE;
 }
