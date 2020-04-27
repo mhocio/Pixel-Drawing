@@ -23,6 +23,13 @@ public:
     int R;
     int G;
     int B;
+
+    int thickness = 1;
+
+    void setThickness(int t) {
+        thickness = t;
+    }
+
     virtual ~IShape() {}
 };
 

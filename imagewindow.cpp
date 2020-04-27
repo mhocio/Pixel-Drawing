@@ -373,6 +373,16 @@ void ImageWindow::deleteShape(QListWidgetItem* item) {
     }
 }
 
+void ImageWindow::setShapeThickness(QListWidgetItem*item, int thickness) {
+    for (const auto &shape : shapes) {
+        if (shape->ToString() == item->text().toStdString()) {
+            shape->setThickness(thickness);
+            update();
+            break;
+        }
+    }
+}
+
 QString ImageWindow::getMode() {
     switch (mode)
     {

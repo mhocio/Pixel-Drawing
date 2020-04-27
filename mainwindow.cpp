@@ -149,3 +149,13 @@ void MainWindow::on_movePolygonButton_clicked()
     sceneQWidget->setModeMovePolygon();
     updateStatusBar();
 }
+
+void MainWindow::on_setThicknessButton_clicked()
+{
+    QListWidgetItem* item = getListWidgetSelectedItem();
+
+    if (item == NULL)
+        return;
+
+    sceneQWidget->setShapeThickness(item, ui->spinBoxThickness->value());
+}

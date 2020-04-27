@@ -19,12 +19,6 @@ public:
         std::swap(x2, y2);
     }
 
-    int thickness = 1;
-
-    void setThickness(int t) {
-        thickness = t;
-    }
-
     std::string ToString() const override;
 
     std::vector<PixelWithColor> getPixels() override {

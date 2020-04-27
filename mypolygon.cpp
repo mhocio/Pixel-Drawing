@@ -58,6 +58,7 @@ std::vector<PixelWithColor> myPolygon::getPixels() {
         line.R = this->R;
         line.G = this->G;
         line.B = this->B;
+        line.setThickness(thickness);
         std::vector<PixelWithColor> newPixels = line.getPixels();
         pixels.insert(pixels.end(), newPixels.begin(), newPixels.end());
     }
@@ -74,7 +75,6 @@ void myPolygon::setFinished() {
             points[0].first, points[0].second );
 
     lines.push_back(line);
-
     isFinished = true;
 }
 

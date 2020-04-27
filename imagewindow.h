@@ -35,6 +35,7 @@ public:
 
     void updateShapeColor(QListWidgetItem* item, QColor color);
     void deleteShape(QListWidgetItem* item);
+    void setShapeThickness(QListWidgetItem*item, int thickness);
 
     void endDrawingPolygon();
 

@@ -196,8 +196,8 @@
        </item>
        <item row="0" column="2">
         <widget class="QFrame" name="verticalFrame">
-         <layout class="QVBoxLayout" name="verticalLayout_3">
-          <item>
+         <layout class="QGridLayout" name="gridLayout_4">
+          <item row="0" column="0" colspan="2">
            <widget class="QPushButton" name="deleteAllButton">
             <property name="text">
              <string>Delete All</string>
@@ -207,36 +207,53 @@
             </property>
            </widget>
           </item>
-          <item>
+          <item row="8" column="0" colspan="2">
+           <widget class="QListWidget" name="listWidget"/>
+          </item>
+          <item row="1" column="0" colspan="2">
            <widget class="QPushButton" name="listFiguresButton">
             <property name="text">
              <string>List Figures</string>
             </property>
            </widget>
           </item>
-          <item>
-           <widget class="Line" name="line">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
+          <item row="7" column="0">
+           <widget class="QPushButton" name="setThicknessButton">
+            <property name="text">
+             <string>Set Thickness</string>
             </property>
            </widget>
           </item>
-          <item>
+          <item row="7" column="1">
+           <widget class="QSpinBox" name="spinBoxThickness">
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>50</number>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0" colspan="2">
            <widget class="QPushButton" name="changeColorButton">
             <property name="text">
              <string>Change Color</string>
             </property>
            </widget>
           </item>
-          <item>
+          <item row="2" column="0">
+           <widget class="Line" name="line">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0" colspan="2">
            <widget class="QPushButton" name="deleteFigureButton">
             <property name="text">
              <string>Delete figure</string>
             </property>
            </widget>
-          </item>
-          <item>
-           <widget class="QListWidget" name="listWidget"/>
           </item>
          </layout>
         </widget>

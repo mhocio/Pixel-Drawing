@@ -49,6 +49,8 @@ private slots:
 
     void on_movePolygonButton_clicked();
 
+    void on_setThicknessButton_clicked();
+
 private:
     ImageWindow *sceneQWidget;
 };
