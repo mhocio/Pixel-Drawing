@@ -93,8 +93,10 @@ void MainWindow::on_changeColorButton_clicked()
 
     QColor color = QColorDialog::getColor(Qt::yellow, this);
 
-    if (color.isValid())
+    if (color.isValid()) {
       sceneQWidget->updateShapeColor(item, color);
+      item->setForeground(color);
+    }
 }
 
 void MainWindow::on_deleteFigureButton_clicked()

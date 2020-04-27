@@ -19,39 +19,18 @@ public:
         std::swap(x2, y2);
     }
 
+    int thickness = 1;
+
+    void setThickness(int t) {
+        thickness = t;
+    }
+
     std::string ToString() const override;
 
     std::vector<PixelWithColor> getPixels() override {
 
         std::vector<PixelWithColor> pixels;
-/*
-        int dx = x2 - x1;
-        int dy = y2 - y1;
-        int d = 2*dy - dx; // initial value of d
-        int dE = 2*dy; // increment used when moving to E
-        int dNE = 2*(dy - dx); // increment used when movint to NE
-        int x = x1, y = y1;
 
-        pixels.push_back(PixelWithColor(x, y, R, G, B));
-
-        while (x < x2)
-        {
-            if ( d < 0 ) { // move to E
-                d += dE;
-                x++;
-            } else { // move to NE
-                d += dNE;
-                ++x;
-                ++y;
-            }
-            pixels.push_back(PixelWithColor(x, y, R, G, B));
-        }
-
-        return pixels;
-    }*/
-
-    //void drawLine(int Ax,int Ay,int Bx,int By)
-    //{
         int Ax = x1, Ay = y1, Bx = x2, By = y2;
         int	y,x,dy,dx,sx,sy;
         int	decision,incE,incNE;
@@ -68,17 +47,20 @@ public:
         Bx += sx;
         By += sy;
 
-        if(dy > dx)
-        {
+        if(dy > dx) {  // vertical lines
             incE = 2 * dx;
             incNE = 2 * dx - 2 * dy;
             decision = 2 * dy - dx;
 
             x = Ax;
             y = Ay;
-            do{
-                //setCell(x,y,0.4,0.7,1.0);
+            do {
                 pixels.push_back(PixelWithColor(x, y, R, G, B));
+                for (int i = 1; i <= thickness - 1; i++) {
+                    pixels.push_back(PixelWithColor(x + i, y, R, G, B));
+                    pixels.push_back(PixelWithColor(x - i, y, R, G, B));
+                }
+
                 if(decision <= 0)
                     decision += incE;
                 else{
@@ -86,25 +68,29 @@ public:
                     x += sx;
                 }
                 y += sy;
-            }while(y != By);
-        }else{
+            } while(y != By);
+        } else {  // horizontal lines
             incE = 2 * dy;
             incNE = 2 * dy - 2 * dx;
             decision = 2 * dx - dy;
 
             x = Ax;
             y = Ay;
-            do{
-                //setCell(x,y,0.4,0.7,1.0);
+            do {
                 pixels.push_back(PixelWithColor(x, y, R, G, B));
-                if(decision <= 0)
+                for (int i = 1; i <= thickness - 1; i++) {
+                    pixels.push_back(PixelWithColor(x, y + i, R, G, B));
+                    pixels.push_back(PixelWithColor(x, y - i, R, G, B));
+                }
+
+                if (decision <= 0)
                     decision += incE;
-                else{
+                else {
                     decision += incNE;
                     y += sy;
                 }
                 x += sx;
-            }while(x != Bx);
+            } while(x != Bx);
         }
     //}
 

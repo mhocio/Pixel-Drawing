@@ -259,6 +259,7 @@ void ImageWindow::mouseReleaseEvent(QMouseEvent * mouseEvent) {
             && pos().x() >= 0 && pos().y() >= 0) {
 
             auto line = std::make_unique<MyLine>(tmpX1, tmpY1, X2, Y2);
+            line->setThickness(5);
 
             shapes.push_back(std::move(line));
             needToUpdate = true;
