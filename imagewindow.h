@@ -16,6 +16,7 @@
 #include "myline.h"
 #include "mycircle.h"
 #include "mypolygon.h"
+#include "mypizza.h"
 
 //class MainWindow;
 
@@ -70,6 +71,8 @@ public:
 
     const unsigned int MOUSE_RADIUS = 100;
 
+    void TurnOnOffAntiAliasing();
+
 private:
     QImage image;
     enum drawMode
@@ -85,6 +88,8 @@ private:
         PIZZA
     };
     drawMode mode;
+
+    bool antiAliased_mode;
 
     int tmpX1;
     int tmpY1;
@@ -105,7 +110,8 @@ private:
     myPolygon *closestPolygon;
 
     // used to PIZZA
-    int pizzaPointNumber;
+    std::unique_ptr<myPizza> tmpPizza = nullptr;
+    int pizzaPointNumber = 0;
 
 
 signals:

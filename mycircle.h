@@ -89,6 +89,12 @@ public:
 
         return pixels;
     }
+
+    std::vector<PixelWithColor> getPixelsAliased() override {
+
+        std::vector<PixelWithColor> pixels;
+        return pixels;
+    }
 };
 
 #endif // MYCIRCLE_H

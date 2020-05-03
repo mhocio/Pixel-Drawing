@@ -13,6 +13,8 @@ class IShape
 public:
     //std::function<PixelWithColor()> generator;
     virtual std::vector<PixelWithColor> getPixels() = 0;
+    virtual std::vector<PixelWithColor> getPixelsAliased() = 0;
+
     virtual std::string ToString() const;
 
     friend bool operator== (const IShape &c1, const IShape &c2);

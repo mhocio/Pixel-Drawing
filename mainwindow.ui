@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>787</width>
-    <height>598</height>
+    <width>815</width>
+    <height>646</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -59,6 +59,13 @@
             </property>
             <property name="minimum">
              <number>1</number>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="antiAliasedButton">
+            <property name="text">
+             <string>Anti-aliased on/off</string>
             </property>
            </widget>
           </item>
@@ -196,6 +203,43 @@
             </property>
            </widget>
           </item>
+          <item>
+           <widget class="Line" name="line_6">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_5">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>Quarter Circle</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pizzaSliceButton">
+            <property name="text">
+             <string>Click 3 points</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="Line" name="line_5">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
          </layout>
         </widget>
        </item>
@@ -310,7 +354,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>787</width>
+     <width>815</width>
      <height>22</height>
     </rect>
    </property>

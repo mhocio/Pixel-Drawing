@@ -12,6 +12,8 @@ public:
 
     std::string ToString() const override;
     std::vector<PixelWithColor> getPixels() override;
+    std::vector<PixelWithColor> getPixelsAliased() override;
+
     std::pair<int, int> compute2DCentroid();
 
     void addPoint(int x, int y);

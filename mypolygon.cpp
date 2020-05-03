@@ -66,6 +66,12 @@ std::vector<PixelWithColor> myPolygon::getPixels() {
     return pixels;
 };
 
+std::vector<PixelWithColor> myPolygon::getPixelsAliased() {
+
+    std::vector<PixelWithColor> pixels;
+    return pixels;
+}
+
 void myPolygon::setFinished() {
     if (isFinished)
         return;

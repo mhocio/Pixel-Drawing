@@ -6,6 +6,7 @@ class PixelWithColor
 {
 public:
     PixelWithColor(int x, int y, int R, int G, int B);
+    PixelWithColor(int x, int y, int R, int G, int B, double I);
     int x;
     int y;
 
@@ -13,6 +14,7 @@ public:
     int G;
     int B;
 
+    double intensity;
 };
 
 #endif // PIXELWITHCOLOR_H

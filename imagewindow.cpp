@@ -16,6 +16,7 @@ ImageWindow::ImageWindow(QWidget *parent) : QWidget(parent)
 {
     image = QImage(width(), height(), QImage::Format_BGR888);  // check if null
     mode = NONE;
+    antiAliased_mode = false;
 }
 
 void ImageWindow::_resize() {
@@ -31,6 +32,11 @@ bool operator==(const PixelWithColor& lhs, const PixelWithColor& rhs)
 bool operator!=(const PixelWithColor& lhs, const PixelWithColor& rhs)
 {
     return !(lhs == rhs);
+}
+
+void ImageWindow::TurnOnOffAntiAliasing() {
+    antiAliased_mode = !antiAliased_mode;
+    update();
 }
 
 void ImageWindow::paintEvent(QPaintEvent*) {
@@ -54,9 +60,15 @@ void ImageWindow::paintEvent(QPaintEvent*) {
     }*/
 
     for (const auto &shape : shapes) {
-        std::vector<PixelWithColor> pixels = shape->getPixels();
+        std::vector<PixelWithColor> pixels;
+
+        if (!antiAliased_mode)
+            pixels = shape->getPixels();
+        else
+            pixels = shape->getPixelsAliased();
+
         for (PixelWithColor pix: pixels)
-            setPixel(pix.x, pix.y, pix.R, pix.G, pix.B);
+            setPixel(pix.x, pix.y, pix.R + 255 - 255*pix.intensity, pix.G +255- 255*pix.intensity, pix.B +255- 255*pix.intensity);
     }
 
     if (tmpPolygon != nullptr) {
@@ -242,7 +254,28 @@ void ImageWindow::mousePressEvent(QMouseEvent * mouseEvent) {
         break;
     case PIZZA:
     {
+        if (tmpPizza == nullptr)
+            tmpPizza = std::make_unique<myPizza>();
 
+        if (pizzaPointNumber == 0) {
+            tmpPizza->pA.first = tmpX1;
+            tmpPizza->pA.second = tmpY1;
+            pizzaPointNumber++;
+        } else if (pizzaPointNumber == 1) {
+            tmpPizza->pB.first = tmpX1;
+            tmpPizza->pB.second = tmpY1;
+            pizzaPointNumber++;
+        } else if (pizzaPointNumber == 2) {
+            tmpPizza->pC.first = tmpX1;
+            tmpPizza->pC.second = tmpY1;
+            pizzaPointNumber = 0;
+
+            shapes.push_back(std::move(tmpPizza));
+            update();
+            tmpPizza = nullptr;
+
+            qDebug() << Q_FUNC_INFO << "ADD PIZZA";
+        }
     }
         break;
     case NONE:
@@ -406,6 +439,8 @@ QString ImageWindow::getMode() {
         case MOVE_CIRCLE: return "Moving circle";
         case RESIZE_CIRCLE: return "Resizing circle";
         case MOVE_POLYGON: return "Moving Polygon";
+        case PIZZA: return "Drawing pizza";
+    default: return "";
     }
 }
 

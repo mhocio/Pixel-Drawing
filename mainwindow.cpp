@@ -171,3 +171,8 @@ void MainWindow::on_pizzaSliceButton_clicked()
     sceneQWidget->setModeDrawPizza();
     updateStatusBar();
 }
+
+void MainWindow::on_antiAliasedButton_clicked()
+{
+    sceneQWidget->TurnOnOffAntiAliasing();
+}

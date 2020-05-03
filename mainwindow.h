@@ -53,6 +53,10 @@ private slots:
 
     void on_brushThickness_valueChanged(int arg1);
 
+    void on_pizzaSliceButton_clicked();
+
+    void on_antiAliasedButton_clicked();
+
 private:
     ImageWindow *sceneQWidget;
 };

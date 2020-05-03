@@ -19,3 +19,4 @@ void IShape::setColor(QColor color) {
     G = qGreen(color.rgb());
     B = qBlue(color.rgb());
 }
+
