@@ -1,6 +1,7 @@
 #ifndef MYLINE_H
 #define MYLINE_H
 
+#include <cmath>
 #include "ishape.h"
 
 template <typename T> int sgn(T val) {
@@ -13,52 +14,6 @@ public:
     MyLine();
     MyLine(int x1, int y1, int x2, int y2);
     int x1, x2, y1, y2;
-
-    void swapAB() {
-        std::swap(x1, y1);
-        std::swap(x2, y2);
-    }
-
-
-    void swap(int* a , int*b)
-    {
-        int temp = *a;
-        *a = *b;
-        *b = temp;
-    }
-
-    // returns absolute value of number
-    float absolute(float x )
-    {
-        if (x < 0) return -x;
-        else return x;
-    }
-
-    //returns integer part of a floating point number
-    int iPartOfNumber(float x)
-    {
-        return (int)x;
-    }
-
-    //rounds off a number
-    int roundNumber(float x)
-    {
-        return iPartOfNumber(x + 0.5) ;
-    }
-
-    //returns fractional part of a number
-    float fPartOfNumber(float x)
-    {
-        if (x>0) return x - iPartOfNumber(x);
-        else return x - (iPartOfNumber(x)+1);
-
-    }
-
-    //returns 1 - fractional part of number
-    float rfPartOfNumber(float x)
-    {
-        return 1 - fPartOfNumber(x);
-    }
 
     std::string ToString() const override;
 
@@ -136,63 +91,80 @@ public:
 
         std::vector<PixelWithColor> pixels;
 
-        bool steep = absolute(y2 - y1) > absolute(x2 - x1);
-        int xa = x1, xb = x2, ya = y1, yb = y2;
+        // Xiaolin Wu's line algorithm
+        // source: https://rosettacode.org/wiki/Xiaolin_Wu%27s_line_algorithm#C.2B.2B
 
-        // swap the co-ordinates if slope > 1 or we
-        // draw backwards
-        if (steep)
-        {
-            swap(&xa , &ya);
-            swap(&xb , &yb);
-        }
-        if (x1 > x2)
-        {
-            swap(&xa ,&xb);
-            swap(&ya ,&yb);
-        }
+        auto ipart = [](float x) -> int {return int(std::floor(x));};
+            auto round = [](float x) -> float {return std::round(x);};
+            auto fpart = [](float x) -> float {return x - std::floor(x);};
+            auto rfpart = [=](float x) -> float {return 1 - fpart(x);};
 
-        //compute the slope
-        float dx = xb-xa;
-        float dy = yb-ya;
-        float gradient = dy/dx;
-        if (dx == 0.0)
-            gradient = 1;
+            int xA = x1, xB = x2, yA = y1, yB = y2;
 
-        int xpxl1 = xa;
-        int xpxl2 = xb;
-        float intersectY = y1;
-
-        // main loop
-        if (steep)
-        {
-            int x;
-            for (x = xpxl1 ; x <=xpxl2 ; x++)
-            {
-                // pixel coverage is determined by fractional
-                // part of y co-ordinate
-                //pixels.push_back(PixelWithColor(x, y, R, G, B));
-                pixels.push_back(PixelWithColor(iPartOfNumber(intersectY), x, R, G, B,
-                            rfPartOfNumber(intersectY)));
-                pixels.push_back(PixelWithColor(iPartOfNumber(intersectY)-1, x, R, G, B,
-                            fPartOfNumber(intersectY)));
-                intersectY += gradient;
+            const bool steep = abs(yB - yA) > abs(xB - xA);
+            if (steep) {
+                std::swap(xA,yA);
+                std::swap(xB,yB);
             }
-        }
-        else
-        {
-            int x;
-            for (x = xpxl1 ; x <=xpxl2 ; x++)
-            {
-                // pixel coverage is determined by fractional
-                // part of y co-ordinate
-                pixels.push_back(PixelWithColor(x, iPartOfNumber(intersectY), R, G, B,
-                            rfPartOfNumber(intersectY)));
-                pixels.push_back(PixelWithColor(x, iPartOfNumber(intersectY)-1, R, G, B,
-                              fPartOfNumber(intersectY)));
-                intersectY += gradient;
+            if (xA > xB) {
+                std::swap(xA,xB);
+                std::swap(yA,yB);
             }
-        }
+
+            const float dx = xB - xA;
+            const float dy = yB - yA;
+            const float gradient = (dx == 0) ? 1 : dy/dx;
+
+            int xpx11;
+            float intery;
+            {
+                const float xend = round(xA);
+                const float yend = yA + gradient * (xend - xA);
+                const float xgap = rfpart(xA + 0.5);
+                xpx11 = int(xend);
+                const int ypx11 = ipart(yend);
+                if (steep) {
+                    pixels.push_back(PixelWithColor(ypx11,     xpx11, R, G, B, rfpart(yend) * xgap));
+                    pixels.push_back(PixelWithColor(ypx11 + 1, xpx11, R, G, B, fpart(yend) * xgap));
+                } else {
+                    pixels.push_back(PixelWithColor(xpx11, ypx11,  R, G, B,  rfpart(yend) * xgap));
+                    pixels.push_back(PixelWithColor(xpx11, ypx11 + 1, R, G, B, fpart(yend) * xgap));
+                }
+                intery = yend + gradient;
+            }
+
+            int xpx12;
+            {
+                const float xend = round(xB);
+                const float yend = yB + gradient * (xend - xB);
+                const float xgap = rfpart(xB + 0.5);
+                xpx12 = int(xend);
+                const int ypx12 = ipart(yend);
+                if (steep) {
+                    pixels.push_back(PixelWithColor(ypx12,     xpx12, R, G, B, rfpart(yend) * xgap));
+                    pixels.push_back(PixelWithColor(ypx12 + 1, xpx12, R, G, B, fpart(yend) * xgap));
+                } else {
+                    pixels.push_back(PixelWithColor(xpx12, ypx12,   R, G, B, rfpart(yend) * xgap));
+                    pixels.push_back(PixelWithColor(xpx12, ypx12 + 1, R, G, B, fpart(yend) * xgap));
+                }
+            }
+
+            if (steep) {
+                for (int x = xpx11 + 1; x < xpx12; x++) {
+                    pixels.push_back(PixelWithColor(ipart(intery),     x, R, G, B, rfpart(intery)));
+                    pixels.push_back(PixelWithColor(ipart(intery) + 1, x, R, G, B, fpart(intery)));
+                    intery += gradient;
+                }
+            } else {
+                for (int x = xpx11 + 1; x < xpx12; x++) {
+                    pixels.push_back(PixelWithColor(x, ipart(intery),    R, G, B, rfpart(intery)));
+                    pixels.push_back(PixelWithColor(x, ipart(intery) + 1, R, G, B, fpart(intery)));
+                    intery += gradient;
+                }
+            }
+
+
+
         return pixels;
     }
 };
