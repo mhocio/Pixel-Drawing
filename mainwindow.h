@@ -57,6 +57,8 @@ private slots:
 
     void on_checkBoxAntiAliasing_stateChanged(int arg1);
 
+    void on_drawRectangleButton_clicked();
+
 private:
     ImageWindow *sceneQWidget;
 };

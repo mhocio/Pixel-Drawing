@@ -177,3 +177,10 @@ void MainWindow::on_checkBoxAntiAliasing_stateChanged(int arg1)
 {
     sceneQWidget->TurnOnOffAntiAliasing();
 }
+
+void MainWindow::on_drawRectangleButton_clicked()
+{
+    sceneQWidget->createNewShape();
+    sceneQWidget->setModeDrawRectangle();
+    updateStatusBar();
+}

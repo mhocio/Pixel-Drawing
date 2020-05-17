@@ -24,6 +24,7 @@ SOURCES += \
     myline.cpp \
     mypizza.cpp \
     mypolygon.cpp \
+    myrectangle.cpp \
     pixelwithcolor.cpp
 
 HEADERS += \
@@ -34,6 +35,7 @@ HEADERS += \
     myline.h \
     mypizza.h \
     mypolygon.h \
+    myrectangle.h \
     pixelwithcolor.h
 
 FORMS += \

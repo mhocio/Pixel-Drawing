@@ -232,20 +232,19 @@ void ImageWindow::mousePressEvent(QMouseEvent * mouseEvent) {
     {
         minimalDistance = 1000000;
         for (auto &shape: shapes) {
-            if (typeid(*shape).name() == typeid(myPolygon).name()) {
+            myPolygon polygon;
+            try {
+                polygon = dynamic_cast<myPolygon&>(*shape);
+            } catch (std::exception e) {
+                continue;
+            }
 
-                myPolygon polygon = dynamic_cast<myPolygon&>(*shape);
-                qDebug() << Q_FUNC_INFO << "CENTRE " << "x: " << polygon.compute2DCentroid().first
-                         << " y: " << polygon.compute2DCentroid().second;
+            std::pair<int, int> polygonCentre = polygon.compute2DCentroid();
+            unsigned int d = distance(tmpX1, tmpY1, polygonCentre.first, polygonCentre.second);
 
-                std::pair<int, int> polygonCentre = polygon.compute2DCentroid();
-                unsigned int d = distance(tmpX1, tmpY1, polygonCentre.first, polygonCentre.second);
-
-                if (d < minimalDistance) {
-                    minimalDistance = d;
-                    closestPolygon = dynamic_cast<myPolygon*>(shape.get());
-                }
-
+            if (d < minimalDistance) {
+                minimalDistance = d;
+                closestPolygon = dynamic_cast<myPolygon*>(shape.get());
             }
         }
     }
@@ -329,6 +328,21 @@ void ImageWindow::mouseReleaseEvent(QMouseEvent * mouseEvent) {
 
             needToUpdate = true;
         }
+        break;
+    case RECTANGLE:
+    {
+        if (pos().x() < width() && pos().y() < height()
+            && pos().x() >= 0 && pos().y() >= 0) {
+
+            std::pair<int, int> A = std::make_pair(tmpX1, tmpY1);
+            std::pair<int, int> B = std::make_pair(X2, Y2);
+            auto rectangle = std::make_unique<myRectangle>(A, B);
+            rectangle->setThickness(brushThickness);
+
+            shapes.push_back(std::move(rectangle));
+            needToUpdate = true;
+        }
+    }
         break;
     case EDIT_LINE:
     {
@@ -438,6 +452,7 @@ QString ImageWindow::getMode() {
         case RESIZE_CIRCLE: return "Resizing circle";
         case MOVE_POLYGON: return "Moving Polygon";
         case PIZZA: return "Drawing pizza";
+        case RECTANGLE: return "Drawing rectangle";
     default: return "";
     }
 }
@@ -457,6 +472,10 @@ void ImageWindow::setModeDrawCircle() {
 
 void ImageWindow::setModeDrawPolygon() {
     mode = POLYGON;
+}
+
+void ImageWindow::setModeDrawRectangle() {
+    mode = RECTANGLE;
 }
 
 void ImageWindow::setModeDrawNone() {

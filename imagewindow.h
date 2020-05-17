@@ -17,6 +17,7 @@
 #include "mycircle.h"
 #include "mypolygon.h"
 #include "mypizza.h"
+#include <myrectangle.h>
 
 //class MainWindow;
 
@@ -52,6 +53,7 @@ public:
     void setModeDrawCircle();
     void setModeDrawPolygon();
     void setModeDrawNone();
+    void setModeDrawRectangle();
 
     void setModeEditLine();
     void setModeMoveCircle();
@@ -85,7 +87,8 @@ private:
         MOVE_CIRCLE,
         RESIZE_CIRCLE,
         MOVE_POLYGON,
-        PIZZA
+        PIZZA,
+        RECTANGLE
     };
     drawMode mode;
 
