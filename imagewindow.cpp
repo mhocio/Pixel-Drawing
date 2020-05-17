@@ -41,7 +41,7 @@ void ImageWindow::TurnOnOffAntiAliasing() {
 
 void ImageWindow::paintEvent(QPaintEvent*) {
     QTime time;
-    time.start();
+    //time.start();
 
     QPainter painter(this);
     uchar* bits = image.bits();
@@ -52,13 +52,6 @@ void ImageWindow::paintEvent(QPaintEvent*) {
         bits++;
     }
 
-    /*
-    for (IShape shape: shapes) {
-        PixelWithColor pix = PixelWithColor(0, 0, 0, 0, 0);
-        while ((pix = shape.generator()) != PixelWithColor(-1, -1, -1, -1, -1))
-            setPixel(pix.x, pix.y, pix.R, pix.G, pix.B);
-    }*/
-
     for (const auto &shape : shapes) {
         std::vector<PixelWithColor> pixels;
 
@@ -68,7 +61,10 @@ void ImageWindow::paintEvent(QPaintEvent*) {
             pixels = shape->getPixelsAliased();
 
         for (PixelWithColor pix: pixels)
-            setPixel(pix.x, pix.y, pix.R + 255 - 255*pix.intensity, pix.G +255- 255*pix.intensity, pix.B +255- 255*pix.intensity);
+            setPixel(pix.x, pix.y,
+                     255 - (255-pix.R)*pix.intensity,
+                     255 - (255-pix.G)*pix.intensity,
+                     255 - (255-pix.B)*pix.intensity);
     }
 
     if (tmpPolygon != nullptr) {
@@ -94,6 +90,8 @@ bool ImageWindow::setPixel(int x, int y, int R, int G, int B) {
     *(bits + 3*x + 3*y*image.height()) = B;
     *(bits + 3*x + 3*y*image.height() + 1) = G;
     *(bits + 3*x + 3*y*image.height() + 2) = R;
+
+    qDebug() << R << " " << G << " " << B;
 
     return true;
 }

@@ -55,7 +55,7 @@ private slots:
 
     void on_pizzaSliceButton_clicked();
 
-    void on_antiAliasedButton_clicked();
+    void on_checkBoxAntiAliasing_stateChanged(int arg1);
 
 private:
     ImageWindow *sceneQWidget;

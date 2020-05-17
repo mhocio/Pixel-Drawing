@@ -69,6 +69,16 @@ std::vector<PixelWithColor> myPolygon::getPixels() {
 std::vector<PixelWithColor> myPolygon::getPixelsAliased() {
 
     std::vector<PixelWithColor> pixels;
+
+    for (auto line: lines) {
+        line.R = this->R;
+        line.G = this->G;
+        line.B = this->B;
+        line.setThickness(thickness);
+        std::vector<PixelWithColor> newPixels = line.getPixelsAliased();
+        pixels.insert(pixels.end(), newPixels.begin(), newPixels.end());
+    }
+
     return pixels;
 }
 

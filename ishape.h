@@ -13,6 +13,7 @@ class IShape
 public:
     //std::function<PixelWithColor()> generator;
     virtual std::vector<PixelWithColor> getPixels() = 0;
+    // how to pass to a lambda function
     virtual std::vector<PixelWithColor> getPixelsAliased() = 0;
 
     virtual std::string ToString() const;

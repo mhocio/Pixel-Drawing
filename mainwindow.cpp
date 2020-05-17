@@ -107,6 +107,7 @@ void MainWindow::on_deleteFigureButton_clicked()
         return;
 
     sceneQWidget->deleteShape(item);
+    updateListWidget();
 }
 
 void MainWindow::on_drawPolygonButton_clicked()
@@ -172,7 +173,7 @@ void MainWindow::on_pizzaSliceButton_clicked()
     updateStatusBar();
 }
 
-void MainWindow::on_antiAliasedButton_clicked()
+void MainWindow::on_checkBoxAntiAliasing_stateChanged(int arg1)
 {
     sceneQWidget->TurnOnOffAntiAliasing();
 }

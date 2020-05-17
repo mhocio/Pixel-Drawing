@@ -37,7 +37,6 @@ public:
         Bx += sx;
         By += sy;
 
-
         if(dy > dx) {  // vertical lines
             incE = 2 * dx;
             incNE = 2 * dx - 2 * dy;
