@@ -184,3 +184,16 @@ void MainWindow::on_drawRectangleButton_clicked()
     sceneQWidget->setModeDrawRectangle();
     updateStatusBar();
 }
+
+void MainWindow::on_boundaryFillButton_clicked()
+{
+    //sceneQWidget->createNewShape();
+
+    QColor color = QColorDialog::getColor(Qt::yellow, this);
+
+    if (color.isValid()) {
+      sceneQWidget->boundaryFill(QColorConstants::Black, color);
+    }
+
+    //updateStatusBar();
+}

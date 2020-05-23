@@ -17,6 +17,7 @@ ImageWindow::ImageWindow(QWidget *parent) : QWidget(parent)
     image = QImage(width(), height(), QImage::Format_BGR888);  // check if null
     mode = NONE;
     antiAliased_mode = false;
+    createCanvas = true;
 }
 
 void ImageWindow::_resize() {
@@ -47,10 +48,13 @@ void ImageWindow::paintEvent(QPaintEvent*) {
     uchar* bits = image.bits();
     uchar* bitsEnd = bits + image.sizeInBytes();
 
-    while (bits < bitsEnd) {
+    while (bits < bitsEnd && createCanvas) {
         *(bits) = 255;
         bits++;
     }
+
+    if (createCanvas)
+        createCanvas = false;
 
     for (const auto &shape : shapes) {
         std::vector<PixelWithColor> pixels;
@@ -91,9 +95,161 @@ bool ImageWindow::setPixel(int x, int y, int R, int G, int B) {
     *(bits + 3*x + 3*y*image.height() + 1) = G;
     *(bits + 3*x + 3*y*image.height() + 2) = R;
 
-    qDebug() << R << " " << G << " " << B;
+    //qDebug() << R << " " << G << " " << B;
 
     return true;
+}
+
+void ImageWindow::boundaryFill(QColor boundary, QColor fill) {
+    mode = BOUNDARY_FILL;
+
+    myBoundary = boundary;
+    myFill = fill;
+}
+
+void ImageWindow::boundaryFill4Helper(int x, int y, QColor boundary, QColor fill) {
+    uchar* bits = image.bits();
+
+    QColor currentColor = QColor(qRgb(*(bits + 3*x + 3*y*image.height()),
+                                 *(bits + 3*x + 3*y*image.height() + 1),
+                                 *(bits + 3*x + 3*y*image.height() + 2)));
+
+    //for (int i = 0; i < 100; i++)
+    /*if (currentColor != boundary && currentColor != fill) {
+        bool correct = setPixel(x, y, qRed(fill.rgb()), qGreen(fill.rgb()), qBlue(fill.rgb()));
+
+        if (!correct)
+            return;
+
+        boundaryFill4Helper(x + 1, y, boundary, fill);
+        boundaryFill4Helper(x - 1, y, boundary, fill);
+        boundaryFill4Helper(x, y + 1, boundary, fill);
+        boundaryFill4Helper(x, y - 1, boundary, fill);
+    }*/
+
+    boundary = QColor(qRgb(0,0,0));
+
+    int originX = x;
+    int originY = y;
+
+    int i = 0;
+    while (true) {
+
+        currentColor = QColor(qRgb(*(bits + 3*x + 3*(y+i)*image.height()),
+                                     *(bits + 3*x + 3*(y+i)*image.height() + 1),
+                                     *(bits + 3*x + 3*(y+i)*image.height() + 2)));
+
+        // RIGHT
+        if (currentColor != boundary && currentColor != fill) {
+            int j = 0;
+            while (true) {
+
+                QColor currentColor = QColor(qRgb(*(bits + 3*(x+j) + 3*(y+i)*image.height()),
+                                                  *(bits + 3*(x+j) + 3*(y+i)*image.height() + 1),
+                                                  *(bits + 3*(x+j) + 3*(y+i)*image.height() + 2)));
+                if (currentColor != boundary && currentColor != fill) {
+                    bool correct = setPixel(x+j, y+i, qRed(fill.rgb()), qGreen(fill.rgb()), qBlue(fill.rgb()));
+
+                    if (!correct)
+                        break;
+                } else {
+                    break;
+                }
+                j++;
+            }
+        } else {
+            break;
+        }
+
+        x = originX;
+        y = originY;
+
+        // LEFT
+        if (currentColor != boundary && currentColor != fill) {
+            int j = 0;
+            while (true) {
+
+                QColor currentColor = QColor(qRgb(*(bits + 3*(x+j) + 3*(y+i)*image.height()),
+                                                  *(bits + 3*(x+j) + 3*(y+i)*image.height() + 1),
+                                                  *(bits + 3*(x+j) + 3*(y+i)*image.height() + 2)));
+                if (currentColor != boundary && currentColor != fill) {
+                    bool correct = setPixel(x+j, y+i, qRed(fill.rgb()), qGreen(fill.rgb()), qBlue(fill.rgb()));
+
+                    if (!correct)
+                        break;
+                } else {
+                    break;
+                }
+                j--;
+            }
+        } else {
+            break;
+        }
+
+        i++;
+    }
+
+
+    //UP
+    i = 0;
+    x = originX; y = originY;
+    while (true) {
+
+        currentColor = QColor(qRgb(*(bits + 3*x + 3*(y+i)*image.height()),
+                                     *(bits + 3*x + 3*(y+i)*image.height() + 1),
+                                     *(bits + 3*x + 3*(y+i)*image.height() + 2)));
+
+        // RIGHT
+        if (currentColor != boundary && currentColor != fill) {
+            int j = 0;
+            while (true) {
+
+                QColor currentColor = QColor(qRgb(*(bits + 3*(x+j) + 3*(y+i)*image.height()),
+                                                  *(bits + 3*(x+j) + 3*(y+i)*image.height() + 1),
+                                                  *(bits + 3*(x+j) + 3*(y+i)*image.height() + 2)));
+                if (currentColor != boundary && currentColor != fill) {
+                    bool correct = setPixel(x+j, y+i, qRed(fill.rgb()), qGreen(fill.rgb()), qBlue(fill.rgb()));
+
+                    if (!correct)
+                        break;
+                } else {
+                    break;
+                }
+                j++;
+            }
+        } else {
+            break;
+        }
+
+        x = originX;
+        y = originY;
+
+        // LEFT
+        if (currentColor != boundary && currentColor != fill) {
+            int j = 0;
+            while (true) {
+
+                QColor currentColor = QColor(qRgb(*(bits + 3*(x+j) + 3*(y+i)*image.height()),
+                                                  *(bits + 3*(x+j) + 3*(y+i)*image.height() + 1),
+                                                  *(bits + 3*(x+j) + 3*(y+i)*image.height() + 2)));
+                if (currentColor != boundary && currentColor != fill) {
+                    bool correct = setPixel(x+j, y+i, qRed(fill.rgb()), qGreen(fill.rgb()), qBlue(fill.rgb()));
+
+                    if (!correct)
+                        break;
+                } else {
+                    break;
+                }
+                j--;
+            }
+        } else {
+            break;
+        }
+
+        i--;
+    }
+
+    update();
 }
 
 void ImageWindow::mouseDoubleClickEvent(QMouseEvent * mouseEvent) {
@@ -275,6 +431,11 @@ void ImageWindow::mousePressEvent(QMouseEvent * mouseEvent) {
         }
     }
         break;
+    case BOUNDARY_FILL:
+    {
+        boundaryFill4Helper(tmpX1, tmpY1, myBoundary, myFill);
+    }
+        break;
     case NONE:
         break;
     }
@@ -378,10 +539,10 @@ void ImageWindow::endDrawingPolygon() {
             shapes.push_back(std::move(tmpPolygon));
         }
         tmpPolygon = nullptr;
-        update();
         newShape = false;
         mode = NONE;
     }
+    update();
 }
 
 void ImageWindow::addPolygon() {

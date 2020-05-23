@@ -55,6 +55,9 @@ public:
     void setModeDrawNone();
     void setModeDrawRectangle();
 
+    void boundaryFill(QColor boundary, QColor fill);
+    void boundaryFill4Helper(int x, int y, QColor boundary, QColor fill);
+
     void setModeEditLine();
     void setModeMoveCircle();
     void setModeResizeCircle();
@@ -88,9 +91,12 @@ private:
         RESIZE_CIRCLE,
         MOVE_POLYGON,
         PIZZA,
-        RECTANGLE
+        RECTANGLE,
+        BOUNDARY_FILL
     };
     drawMode mode;
+
+    QColor myBoundary, myFill;
 
     bool antiAliased_mode;
 
@@ -116,6 +122,7 @@ private:
     std::unique_ptr<myPizza> tmpPizza = nullptr;
     int pizzaPointNumber = 0;
 
+    bool createCanvas;
 
 signals:
 
