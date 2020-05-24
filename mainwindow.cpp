@@ -184,3 +184,18 @@ void MainWindow::on_drawRectangleButton_clicked()
     sceneQWidget->setModeDrawRectangle();
     updateStatusBar();
 }
+
+void MainWindow::on_fillPolygonColorButton_clicked()
+{
+    QListWidgetItem* item = getListWidgetSelectedItem();
+
+    if (item == NULL)
+        return;
+
+    QColor color = QColorDialog::getColor(Qt::yellow, this);
+
+    if (color.isValid()) {
+      sceneQWidget->fillPolygon(item, color);
+      // item->setForeground(color);
+    }
+}

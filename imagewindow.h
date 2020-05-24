@@ -36,6 +36,7 @@ public:
     std::vector <std::string> getAllShapesStrings();
 
     void updateShapeColor(QListWidgetItem* item, QColor color);
+    void fillPolygon(QListWidgetItem* item, QColor color);
     void deleteShape(QListWidgetItem* item);
     void setShapeThickness(QListWidgetItem*item, int thickness);
 

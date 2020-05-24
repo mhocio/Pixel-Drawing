@@ -53,8 +53,14 @@ void ImageWindow::paintEvent(QPaintEvent*) {
     }
 
     for (const auto &shape : shapes) {
-        std::vector<PixelWithColor> pixels;
+        myPolygon *poly = dynamic_cast<myPolygon*>(shape.get());
+        if (poly != nullptr && poly->isFilled) {
+            for (PixelWithColor pix: poly->getFillingPixels())
+                setPixel(pix.x, pix.y, pix.R, pix.G, pix.B);
+            continue;
+        }
 
+        std::vector<PixelWithColor> pixels;
         if (!antiAliased_mode)
             pixels = shape->getPixels();
         else
@@ -91,17 +97,17 @@ bool ImageWindow::setPixel(int x, int y, int R, int G, int B) {
     *(bits + 3*x + 3*y*image.height() + 1) = G;
     *(bits + 3*x + 3*y*image.height() + 2) = R;
 
-    qDebug() << R << " " << G << " " << B;
+    // qDebug() << R << " " << G << " " << B;
 
     return true;
 }
 
 void ImageWindow::mouseDoubleClickEvent(QMouseEvent * mouseEvent) {
-    qDebug() << Q_FUNC_INFO << mouseEvent->pos();
+    // qDebug() << Q_FUNC_INFO << mouseEvent->pos();
 }
 
 void ImageWindow::mouseMoveEvent(QMouseEvent * mouseEvent) {
-    qDebug() << Q_FUNC_INFO << mouseEvent->pos();
+    // qDebug() << Q_FUNC_INFO << mouseEvent->pos();
 
     int X2 = mouseEvent->pos().x();
     int Y2 = mouseEvent->pos().y();
@@ -164,7 +170,7 @@ void ImageWindow::mouseMoveEvent(QMouseEvent * mouseEvent) {
 }
 
 void ImageWindow::mousePressEvent(QMouseEvent * mouseEvent) {
-    qDebug() << Q_FUNC_INFO << mouseEvent->pos();
+    // qDebug() << Q_FUNC_INFO << mouseEvent->pos();
     tmpX1 = mouseEvent->pos().x();
     tmpY1 = mouseEvent->pos().y();
 
@@ -281,7 +287,7 @@ void ImageWindow::mousePressEvent(QMouseEvent * mouseEvent) {
 }
 
 void ImageWindow::mouseReleaseEvent(QMouseEvent * mouseEvent) {
-    qDebug() << Q_FUNC_INFO << mouseEvent->pos();
+    // qDebug() << Q_FUNC_INFO << mouseEvent->pos();
 
     int X2 = mouseEvent->pos().x();
     int Y2 = mouseEvent->pos().y();
@@ -412,6 +418,21 @@ void ImageWindow::updateShapeColor(QListWidgetItem* item, QColor color) {
             shape->setColor(color);
             update();
             break;
+        }
+    }
+}
+
+void ImageWindow::fillPolygon(QListWidgetItem* item, QColor color) {
+    for (const auto &shape : shapes) {
+        if (shape->ToString() == item->text().toStdString()) {
+            myPolygon *poly = dynamic_cast<myPolygon*>(shape.get());
+            if (poly == nullptr) {
+                qDebug() << "not polygon";
+                return;
+            }
+
+            poly->setFilled(color);
+            update();
         }
     }
 }

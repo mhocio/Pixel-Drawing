@@ -16,6 +16,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    aet.cpp \
+    aetnode.cpp \
     imagewindow.cpp \
     ishape.cpp \
     main.cpp \
@@ -28,6 +30,8 @@ SOURCES += \
     pixelwithcolor.cpp
 
 HEADERS += \
+    aet.h \
+    aetnode.h \
     imagewindow.h \
     ishape.h \
     mainwindow.h \

@@ -59,6 +59,8 @@ private slots:
 
     void on_drawRectangleButton_clicked();
 
+    void on_fillPolygonColorButton_clicked();
+
 private:
     ImageWindow *sceneQWidget;
 };
