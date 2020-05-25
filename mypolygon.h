@@ -18,6 +18,7 @@ public:
     std::vector<PixelWithColor> getPixelsAliased() override;
 
     std::pair<int, int> compute2DCentroid();
+    bool isConvex();
 
     void addPoint(int x, int y);
     void move(int dx, int dy);
@@ -57,7 +58,7 @@ public:
         for (auto point: points)
             ind.push_back(std::make_pair(point.second, i++));
         std::sort(ind.begin(), ind.end(), [](const std::pair<int, int>& el1, const std::pair<int, int>& el2)
-                                {return el1.first < el2.first;});
+                                {return el1.first < el2.first; });
 
         std::vector<int> indices;
         for (auto p: ind)

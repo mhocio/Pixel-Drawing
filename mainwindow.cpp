@@ -199,3 +199,18 @@ void MainWindow::on_fillPolygonColorButton_clicked()
       // item->setForeground(color);
     }
 }
+
+void MainWindow::on_setBoundaryButton_clicked()
+{
+    clipBoundaryPolygon = getListWidgetSelectedItem();
+}
+
+void MainWindow::on_setClipButton_clicked()
+{
+    polygonToClip = getListWidgetSelectedItem();
+}
+
+void MainWindow::on_clipPolygonButton_clicked()
+{
+    sceneQWidget->createNewPolygon(clipBoundaryPolygon, polygonToClip);
+}

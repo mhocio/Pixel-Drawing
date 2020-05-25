@@ -40,9 +40,6 @@ void ImageWindow::TurnOnOffAntiAliasing() {
 }
 
 void ImageWindow::paintEvent(QPaintEvent*) {
-    QTime time;
-    //time.start();
-
     QPainter painter(this);
     uchar* bits = image.bits();
     uchar* bitsEnd = bits + image.sizeInBytes();
@@ -53,6 +50,7 @@ void ImageWindow::paintEvent(QPaintEvent*) {
     }
 
     for (const auto &shape : shapes) {
+        // filling polygons
         myPolygon *poly = dynamic_cast<myPolygon*>(shape.get());
         if (poly != nullptr && poly->isFilled) {
             for (PixelWithColor pix: poly->getFillingPixels())
@@ -79,11 +77,7 @@ void ImageWindow::paintEvent(QPaintEvent*) {
             setPixel(pix.x, pix.y, pix.R, pix.G, pix.B);
     }
 
-    setPixel(100, 380, 0, 0, 0);
-
     painter.drawImage(0, 0, image);
-
-    //qDebug() << "drawImage time:" << time.elapsed();
 }
 
 bool ImageWindow::setPixel(int x, int y, int R, int G, int B) {
@@ -456,6 +450,48 @@ void ImageWindow::setShapeThickness(QListWidgetItem*item, int thickness) {
         }
     }
 }
+
+void ImageWindow::createNewPolygon(QListWidgetItem* clipBoundaryPolygon, QListWidgetItem* polygonToClip) {
+    myPolygon* clipPolygon = nullptr;
+    myPolygon* boundaryPolygon = nullptr;
+
+    if (clipBoundaryPolygon == nullptr
+            ||polygonToClip == nullptr)
+        return;
+
+    for (const auto &shape : shapes) {
+        if (shape->ToString() == clipBoundaryPolygon->text().toStdString())
+            boundaryPolygon = dynamic_cast<myPolygon*>(shape.get());
+        else if (shape->ToString() == polygonToClip->text().toStdString())
+            clipPolygon = dynamic_cast<myPolygon*>(shape.get());
+    }
+
+    if (!clipPolygon->isConvex()) {
+        QMessageBox msgBox;
+        msgBox.setText("The clipping polygon is not convex!");
+        msgBox.exec();
+        return;
+    }
+
+    if (clipPolygon != nullptr && boundaryPolygon != nullptr) {
+        SutherlandHodgman S = SutherlandHodgman();
+        std::vector<QPoint> points = S.GetIntersectedPoints(*clipPolygon, *boundaryPolygon);
+
+        qDebug() << "POINTS: ";
+        for (auto p: points)
+            qDebug() << p.x() << " " << p.y();
+
+        auto newPoly = std::make_unique<myPolygon>();
+        newPoly->thickness = 2;
+        for (QPoint point: points)
+            newPoly->addPoint(point.x(), point.y());
+        newPoly->setFinished();
+
+        shapes.push_back(std::move(newPoly));
+        update();
+    }
+}
+
 
 void ImageWindow::updateBrushThickness(int t) {
     brushThickness = t;

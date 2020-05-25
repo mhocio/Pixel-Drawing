@@ -61,8 +61,17 @@ private slots:
 
     void on_fillPolygonColorButton_clicked();
 
+    void on_setBoundaryButton_clicked();
+
+    void on_setClipButton_clicked();
+
+    void on_clipPolygonButton_clicked();
+
 private:
     ImageWindow *sceneQWidget;
+
+    QListWidgetItem *clipBoundaryPolygon = nullptr;
+    QListWidgetItem *polygonToClip = nullptr;
 };
 
 #endif // MAINWINDOW_H

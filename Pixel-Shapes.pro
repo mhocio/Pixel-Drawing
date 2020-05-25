@@ -27,7 +27,8 @@ SOURCES += \
     mypizza.cpp \
     mypolygon.cpp \
     myrectangle.cpp \
-    pixelwithcolor.cpp
+    pixelwithcolor.cpp \
+    sutherlandhodgman.cpp
 
 HEADERS += \
     aet.h \
@@ -40,7 +41,8 @@ HEADERS += \
     mypizza.h \
     mypolygon.h \
     myrectangle.h \
-    pixelwithcolor.h
+    pixelwithcolor.h \
+    sutherlandhodgman.h
 
 FORMS += \
     mainwindow.ui

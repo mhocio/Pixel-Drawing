@@ -9,6 +9,7 @@
 #include <QMouseEvent>
 #include <QListWidgetItem>
 #include <QGuiApplication>
+#include <QMessageBox>
 
 #include <cmath>
 #include <string.h>
@@ -17,6 +18,7 @@
 #include "mycircle.h"
 #include "mypolygon.h"
 #include "mypizza.h"
+#include "sutherlandhodgman.h"
 #include <myrectangle.h>
 
 //class MainWindow;
@@ -39,6 +41,8 @@ public:
     void fillPolygon(QListWidgetItem* item, QColor color);
     void deleteShape(QListWidgetItem* item);
     void setShapeThickness(QListWidgetItem*item, int thickness);
+
+    void createNewPolygon(QListWidgetItem* clipBoundaryPolygon, QListWidgetItem* polygonToClip);
 
     void updateBrushThickness(int t);
     unsigned int brushThickness = 1;

@@ -13,9 +13,6 @@ public:
     AET(std::vector<std::pair<int,int> > points);
     AET();
 
-    int minY;
-    int maxY;
-
     std::vector<std::pair<int,int> > points;
 
     void add(const AETnode node);

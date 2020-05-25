@@ -94,6 +94,46 @@ void myPolygon::setFinished() {
     isFinished = true;
 }
 
+float CrossProductLength(float Ax, float Ay,
+    float Bx, float By, float Cx, float Cy)
+{
+    // Get the vectors' coordinates.
+    float BAx = Ax - Bx;
+    float BAy = Ay - By;
+    float BCx = Cx - Bx;
+    float BCy = Cy - By;
+
+    // Calculate the Z coordinate of the cross product.
+    return (BAx * BCy - BAy * BCx);
+}
+
+// http://csharphelper.com/blog/2014/07/determine-whether-a-polygon-is-convex-in-c/
+bool myPolygon::isConvex() {
+    bool got_negative = false;
+    bool got_positive = false;
+    int num_points = points.size();
+    int B, C;
+    for (int A = 0; A < num_points; A++) {
+        B = (A + 1) % num_points;
+        C = (B + 1) % num_points;
+
+        float cross_product =
+            CrossProductLength(
+                points[A].first, points[A].second,
+                points[B].first, points[B].second,
+                points[C].first, points[C].second);
+        if (cross_product < 0) {
+            got_negative = true;
+        } else if (cross_product > 0) {
+            got_positive = true;
+        }
+        if (got_negative && got_positive)
+            return false;
+    }
+
+    return true;
+}
+
 std::pair<int, int> myPolygon::compute2DCentroid() {
     std::pair<int, int> centroid = std::make_pair<int, int> (0, 0);
 
