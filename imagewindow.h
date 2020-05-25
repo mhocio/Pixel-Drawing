@@ -10,6 +10,7 @@
 #include <QListWidgetItem>
 #include <QGuiApplication>
 #include <QMessageBox>
+#include <QPixmap>
 
 #include <cmath>
 #include <string.h>
@@ -39,6 +40,7 @@ public:
 
     void updateShapeColor(QListWidgetItem* item, QColor color);
     void fillPolygon(QListWidgetItem* item, QColor color);
+    void fillPolygon(QListWidgetItem* item, QImage image);
     void deleteShape(QListWidgetItem* item);
     void setShapeThickness(QListWidgetItem*item, int thickness);
 

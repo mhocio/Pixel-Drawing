@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include <algorithm>
+#include <QPixmap>
 #include "ishape.h"
 #include "myline.h"
 #include "aet.h"
@@ -35,10 +36,39 @@ public:
 
     // filling the polygon
     bool isFilled = false;
+
     QColor fillingColor;
+    bool isFilledWithColor = false;
+
+    QImage fillingImage;
+    uchar* bits;
+    bool isFilledWithImage = false;
+
     void setFilled(QColor c) {
+        isFilledWithColor = true;
+        isFilledWithImage = false;
         isFilled = true;
         fillingColor = c;
+    }
+
+    void setFilled(QImage image) {
+        isFilled = true;
+        isFilledWithColor = false;
+        isFilledWithImage = true;
+        fillingImage = image.convertToFormat(QImage::Format_BGR888);
+        bits = fillingImage.bits();
+    }
+
+    PixelWithColor getPixelFromImage(int x, int y) {
+        int newR, newB, newG;
+        int xx = x % fillingImage.width();
+        int yy = y % fillingImage.height();
+
+        int pos = xx*3 + yy*fillingImage.width()*3;
+        newB = *(bits + pos);
+        newG = *(bits + pos + 1);
+        newR = *(bits + pos + 2);
+        return PixelWithColor(x, y, newR, newB, newG);
     }
 
     std::vector<PixelWithColor> getFillingPixels() {
@@ -107,14 +137,23 @@ public:
                     continue;
                 int beginX = ceil(xVals[bucketIndex]);
                 int endX = floor(xVals[bucketIndex + 1]);
-                for (int xx = beginX; xx <= endX; xx++)
-                    ret.push_back(PixelWithColor(xx, y, fillR, fillG, fillB));
+                for (int xx = beginX; xx <= endX; xx++) {
+                    if (isFilledWithColor)
+                        ret.push_back(PixelWithColor(xx, y, fillR, fillG, fillB));
+                    else
+                        ret.push_back(getPixelFromImage(xx, y));
+                }
             }
 
             ++y;
             aet.nodes.remove_if([y](AETnode &a){return a.yMax == y;});
             for (auto &edge: aet.nodes)
                 edge.xMin += edge.m_inverse;
+        }
+
+        if (isFilledWithImage) {
+            qDebug() << "dimensions" << fillingImage.width() << " " << fillingImage.height();
+            qDebug() << fillingImage.sizeInBytes();
         }
 
         return ret;

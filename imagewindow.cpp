@@ -431,6 +431,21 @@ void ImageWindow::fillPolygon(QListWidgetItem* item, QColor color) {
     }
 }
 
+void ImageWindow::fillPolygon(QListWidgetItem* item, QImage image) {
+    for (const auto &shape : shapes) {
+        if (shape->ToString() == item->text().toStdString()) {
+            myPolygon *poly = dynamic_cast<myPolygon*>(shape.get());
+            if (poly == nullptr) {
+                qDebug() << "not polygon";
+                return;
+            }
+
+            poly->setFilled(image);
+            update();
+        }
+    }
+}
+
 void ImageWindow::deleteShape(QListWidgetItem* item) {
     for (const auto &shape : shapes) {
         if (shape->ToString() == item->text().toStdString()) {

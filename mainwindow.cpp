@@ -120,6 +120,7 @@ void MainWindow::on_drawPolygonButton_clicked()
 void MainWindow::on_endDrawingPolygonButton_clicked()
 {
     sceneQWidget->endDrawingPolygon();
+    sceneQWidget->update();
     updateStatusBar();
 }
 
@@ -196,6 +197,7 @@ void MainWindow::on_fillPolygonColorButton_clicked()
 
     if (color.isValid()) {
       sceneQWidget->fillPolygon(item, color);
+      sceneQWidget->update();
       // item->setForeground(color);
     }
 }
@@ -213,4 +215,24 @@ void MainWindow::on_setClipButton_clicked()
 void MainWindow::on_clipPolygonButton_clicked()
 {
     sceneQWidget->createNewPolygon(clipBoundaryPolygon, polygonToClip);
+}
+
+void MainWindow::on_fillPolygonwithImageButton_clicked()
+{
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Choose"), "", tr("Images (*.png *.jpg *.jpeg *.bmp *.gif)"));
+
+    if (QString::compare(fileName, QString()) != 0) {
+        QImage image;
+
+        if (image.load(fileName) == 0)
+            QMessageBox::warning(this, "Warning", "Cannot open file");
+
+        QListWidgetItem* item = getListWidgetSelectedItem();
+
+        if (item == NULL)
+            return;
+
+        sceneQWidget->fillPolygon(item, image);
+        sceneQWidget->update();
+    }
 }

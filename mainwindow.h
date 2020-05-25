@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <QColorDialog>
 #include <QBrush>
+#include <QFileDialog>
+#include <QPixmap>
 #include "imagewindow.h"
 
 QT_BEGIN_NAMESPACE
@@ -66,6 +68,8 @@ private slots:
     void on_setClipButton_clicked();
 
     void on_clipPolygonButton_clicked();
+
+    void on_fillPolygonwithImageButton_clicked();
 
 private:
     ImageWindow *sceneQWidget;
