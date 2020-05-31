@@ -152,6 +152,12 @@ void ImageWindow::mouseMoveEvent(QMouseEvent * mouseEvent) {
         }
     }
         break;
+    case MOVE_RECTANGLE_VERTEX:
+    {
+        polygonToEdit->moveVertex(X2, Y2);
+        needToUpdate = true;
+    }
+        break;
     case NONE:
         break;
     }
@@ -525,6 +531,8 @@ QString ImageWindow::getMode() {
         case MOVE_POLYGON: return "Moving Polygon";
         case PIZZA: return "Drawing pizza";
         case RECTANGLE: return "Drawing rectangle";
+        case MOVE_RECTANGLE_EDGE: return "Moving Rectangle Edge";
+        case MOVE_RECTANGLE_VERTEX: return "Moving Rectangle Vertex";
     default: return "";
     }
 }
@@ -573,4 +581,17 @@ void ImageWindow::setModeMovePolygon() {
 void ImageWindow::setModeDrawPizza() {
     mode = PIZZA;
     pizzaPointNumber = 0;
+}
+
+void ImageWindow::setModeMovePolygonEdge() {
+    mode = MOVE_RECTANGLE_EDGE;
+}
+
+void ImageWindow::setModeMovePolygonVertex(QListWidgetItem* item) {
+    for (const auto &shape : shapes) {
+        if (shape->ToString() == item->text().toStdString()) {
+            polygonToEdit = dynamic_cast<myPolygon*>(shape.get());
+            mode = MOVE_RECTANGLE_VERTEX;
+        }
+    }
 }

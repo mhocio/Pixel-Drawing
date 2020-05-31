@@ -27,12 +27,17 @@ public:
     void setFinished();
 
     std::vector<std::pair<int,int> > points;
+    std::vector<std::pair<int,int> > tmpPoints;
     int getPointsSize() {
         return points.size();
     }
 
     std::vector<MyLine> lines;
+    void generateLines();
     bool isFinished = false;
+
+    // moving edges and vertices
+    void moveVertex(int newX, int newY);
 
     // filling the polygon
     bool isFilled = false;
@@ -44,16 +49,22 @@ public:
     uchar* bits;
     bool isFilledWithImage = false;
 
-    void setFilled(QColor c) {
-        isFilledWithColor = true;
+    void resetFilling() {
+        isFilled = false;
+        isFilledWithColor = false;
         isFilledWithImage = false;
+    }
+
+    void setFilled(QColor c) {
+        resetFilling();
         isFilled = true;
+        isFilledWithColor = true;
         fillingColor = c;
     }
 
     void setFilled(QImage image) {
+        resetFilling();
         isFilled = true;
-        isFilledWithColor = false;
         isFilledWithImage = true;
         fillingImage = image.convertToFormat(QImage::Format_BGR888);
         bits = fillingImage.bits();

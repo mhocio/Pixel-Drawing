@@ -7,6 +7,9 @@
 #include <QColor>
 #include <string>
 #include "pixelwithcolor.h"
+#include "nlohmann/json.hpp"
+
+using json = nlohmann::json;
 
 class IShape
 {
@@ -15,6 +18,9 @@ public:
     virtual std::vector<PixelWithColor> getPixels() = 0;
     // how to pass to a lambda function
     virtual std::vector<PixelWithColor> getPixelsAliased() = 0;
+
+    //virtual json getJsonFormat() = 0;
+    json getIShapeJson();
 
     virtual std::string ToString() const;
 

@@ -6,7 +6,9 @@
 #include <QBrush>
 #include <QFileDialog>
 #include <QPixmap>
+#include <fstream>
 #include "imagewindow.h"
+#include "nlohmann/json.hpp"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -70,6 +72,12 @@ private slots:
     void on_clipPolygonButton_clicked();
 
     void on_fillPolygonwithImageButton_clicked();
+
+    void on_moveEdgeButton_clicked();
+
+    void on_movePolygonVertexButton_clicked();
+
+    void on_actionSave_triggered();
 
 private:
     ImageWindow *sceneQWidget;

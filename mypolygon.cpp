@@ -51,6 +51,45 @@ void myPolygon::move(int dx, int dy) {
     }
 }
 
+void myPolygon::generateLines() {
+    points.clear();
+    lines.clear();
+    for (auto point: tmpPoints)
+        addPoint(point.first, point.second);
+
+    isFinished = false;
+    setFinished();
+}
+
+float distance2(int x1, int y1, int x2, int y2)
+{
+    return sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2) * 1.0);
+}
+
+void myPolygon::moveVertex(int newX, int newY) {
+    if (points.size() < 1)
+        return;
+
+    qDebug() << "moving vertex";
+
+    std::pair<int,int>* closestPoint = &(points[0]);
+    float minDistance = distance2(newX, newY, closestPoint->first, closestPoint->second);
+
+    for (std::pair<int,int>& point: points) {
+        if (distance2(newX, newY, point.first, point.second) < minDistance) {
+            minDistance = distance2(newX, newY, point.first, point.second);
+            closestPoint = &point;
+        }
+    }
+
+    closestPoint->first = newX;
+    closestPoint->second = newY;
+
+    tmpPoints.clear();
+    tmpPoints = points;
+    generateLines();
+}
+
 std::vector<PixelWithColor> myPolygon::getPixels() {
     std::vector<PixelWithColor> pixels;
 

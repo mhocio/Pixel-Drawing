@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+using json = nlohmann::json;
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -224,8 +226,10 @@ void MainWindow::on_fillPolygonwithImageButton_clicked()
     if (QString::compare(fileName, QString()) != 0) {
         QImage image;
 
-        if (image.load(fileName) == 0)
+        if (image.load(fileName) == 0) {
             QMessageBox::warning(this, "Warning", "Cannot open file");
+            return;
+        }
 
         QListWidgetItem* item = getListWidgetSelectedItem();
 
@@ -235,4 +239,32 @@ void MainWindow::on_fillPolygonwithImageButton_clicked()
         sceneQWidget->fillPolygon(item, image);
         sceneQWidget->update();
     }
+}
+
+void MainWindow::on_moveEdgeButton_clicked()
+{
+    sceneQWidget->setModeMovePolygonEdge();
+    updateStatusBar();
+}
+
+void MainWindow::on_movePolygonVertexButton_clicked()
+{
+    sceneQWidget->setModeMovePolygonVertex(getListWidgetSelectedItem());
+    updateStatusBar();
+}
+
+void MainWindow::on_actionSave_triggered()
+{
+    /*
+    auto fileName = QFileDialog::getSaveFileName(this, tr("Save Your Project"), "", tr("Project File(*.json);;All Files (*)"));
+    if (fileName.isEmpty())
+        return;
+
+    json j;
+    for (auto &shape : scene->shapes) {
+        j.push_back(shape->getJsonFormat());
+    }
+
+    std::ofstream file(fileName.toStdString());
+        file << j;*/
 }

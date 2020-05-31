@@ -67,6 +67,9 @@ public:
     void setModeResizeCircle();
     void setModeMovePolygon();
 
+    void setModeMovePolygonEdge();
+    void setModeMovePolygonVertex(QListWidgetItem* item);
+
     void setModeDrawPizza();
 
     QString getMode();
@@ -95,7 +98,9 @@ private:
         RESIZE_CIRCLE,
         MOVE_POLYGON,
         PIZZA,
-        RECTANGLE
+        RECTANGLE,
+        MOVE_RECTANGLE_EDGE,
+        MOVE_RECTANGLE_VERTEX
     };
     drawMode mode;
 
@@ -118,6 +123,7 @@ private:
 
     // used to MOVE_POLYGON
     myPolygon *closestPolygon;
+    myPolygon *polygonToEdit;
 
     // used to PIZZA
     std::unique_ptr<myPizza> tmpPizza = nullptr;
