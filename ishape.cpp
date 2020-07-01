@@ -20,3 +20,11 @@ void IShape::setColor(QColor color) {
     B = qBlue(color.rgb());
 }
 
+json IShape::getIShapeJson() {
+    json item;
+    item["color"] = {R, G, B};
+    item["thickness"] = thickness;
+
+    return item;
+}
+

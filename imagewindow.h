@@ -80,6 +80,7 @@ public:
     }
 
     void addPolygon();
+    std::vector<std::unique_ptr<IShape>> shapes;
 
     const unsigned int MOUSE_RADIUS = 100;
 
@@ -109,7 +110,6 @@ private:
     int tmpX1;
     int tmpY1;
 
-    std::vector<std::unique_ptr<IShape>> shapes;
     bool newShape = true;
     std::unique_ptr<myPolygon> tmpPolygon = nullptr;
 

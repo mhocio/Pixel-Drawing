@@ -7,6 +7,34 @@ myPolygon::myPolygon()
     this->B = 0;
 }
 
+json myPolygon::getJsonFormat() {
+    json item = getIShapeJson();
+    item["shape"] = "polygon";
+    for (auto point : points)
+        item["points"].push_back({point.first, point.second});
+
+    item["isFilled"] = isFilled;
+
+    item["isFilledWithColor"] = isFilledWithColor;
+    item["fillingColor"] = {fillingColor.red(), fillingColor.green(), fillingColor.blue()};
+
+    item["isFilledWithImage"] = isFilledWithImage;
+
+    /*if (isFilledWithImage) {
+        QByteArray ba = QByteArray::fromRawData((const char*)fillingImage.bits(), fillingImage.byteCount());
+        qDebug() << "ba size:" << ba.size() << "\n";
+
+        char *data = ba.data();
+        while (*data) {
+            //qDebug() << "[" << *data << "]" << Qt::endl;
+            item["fillingImage"].push_back(data);
+            ++data;
+        }
+    }*/
+
+    return item;
+}
+
 myPolygon::myPolygon(std::vector<std::pair<int,int> > points) {
     this->R = 0;
     this->G = 0;

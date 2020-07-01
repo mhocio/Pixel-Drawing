@@ -19,7 +19,7 @@ public:
     // how to pass to a lambda function
     virtual std::vector<PixelWithColor> getPixelsAliased() = 0;
 
-    //virtual json getJsonFormat() = 0;
+    virtual json getJsonFormat() = 0;
     json getIShapeJson();
 
     virtual std::string ToString() const;

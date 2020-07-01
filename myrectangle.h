@@ -10,6 +10,7 @@ class myRectangle : public myPolygon
 public:
     myRectangle();
     myRectangle(std::pair<int, int> A, std::pair<int, int> B);
+    json getJsonFormat() override;
 
     std::pair<int, int> firstPoint, secondPoint;
 };

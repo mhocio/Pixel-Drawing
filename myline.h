@@ -16,6 +16,7 @@ public:
     int x1, x2, y1, y2;
 
     std::string ToString() const override;
+    json getJsonFormat() override;
 
     std::vector<PixelWithColor> getPixels() override {
 

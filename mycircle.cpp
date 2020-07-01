@@ -23,3 +23,13 @@ std::string MyCircle::ToString() const {
 
     return s;
 }
+
+json MyCircle::getJsonFormat() {
+    json item = getIShapeJson();
+    item["shape"] = "circle";
+    item["X"] = X;
+    item["Y"] = Y;
+    item["radius"] = radius;
+
+    return item;
+}

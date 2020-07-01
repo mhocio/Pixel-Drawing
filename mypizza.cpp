@@ -7,6 +7,22 @@ myPizza::myPizza()
     this->B = 0;
 }
 
+myPizza::myPizza(std::pair<int, int> pA, std::pair<int, int> pB,std::pair<int, int> pC) {
+    this->pA = pA;
+    this->pB = pB;
+    this->pC = pC;
+}
+
+json myPizza::getJsonFormat() {
+    json item = getIShapeJson();
+    item["shape"] = "pizza";
+    item["pA"] = pA;
+    item["pB"] = pB;
+    item["pC"] = pC;
+
+    return item;
+}
+
 std::string myPizza::ToString() const {
     std::string s;
     s += "A: " + std::to_string(pA.first) + " " + std::to_string(pA.second);

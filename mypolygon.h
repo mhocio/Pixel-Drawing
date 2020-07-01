@@ -4,6 +4,7 @@
 #include <cmath>
 #include <algorithm>
 #include <QPixmap>
+#include <QBuffer>
 #include "ishape.h"
 #include "myline.h"
 #include "aet.h"
@@ -17,6 +18,7 @@ public:
     std::string ToString() const override;
     std::vector<PixelWithColor> getPixels() override;
     std::vector<PixelWithColor> getPixelsAliased() override;
+    json getJsonFormat() override;
 
     std::pair<int, int> compute2DCentroid();
     bool isConvex();
@@ -132,9 +134,6 @@ public:
             }
             aet.nodes.sort( [](const AETnode& a, const AETnode& b) {
                     return a.xMin < b.xMin; });
-
-            qDebug() << "y: " << y;
-            aet.print();
 
             // fill pixels between pairs of intersections
             unsigned int bucketSize = aet.nodes.size();

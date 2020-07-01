@@ -9,6 +9,11 @@
 #include <fstream>
 #include "imagewindow.h"
 #include "nlohmann/json.hpp"
+#include "mycircle.h"
+#include "myline.h"
+#include "mypizza.h"
+#include "mypolygon.h"
+#include "myrectangle.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -78,6 +83,8 @@ private slots:
     void on_movePolygonVertexButton_clicked();
 
     void on_actionSave_triggered();
+
+    void on_actionLoad_triggered();
 
 private:
     ImageWindow *sceneQWidget;

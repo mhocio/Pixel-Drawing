@@ -6,6 +6,15 @@ myRectangle::myRectangle() {
     this->B = 0;
 }
 
+json myRectangle::getJsonFormat() {
+    json item = myPolygon::getJsonFormat();
+    item["shape"] = "rectangle";
+    item["firstPoint"] = firstPoint;
+    item["secondPoint"] = secondPoint;
+
+    return item;
+}
+
 myRectangle::myRectangle(std::pair<int, int> A, std::pair<int, int> B) {
     myRectangle();
 

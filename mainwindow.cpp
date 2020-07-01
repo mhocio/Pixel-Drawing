@@ -255,16 +255,73 @@ void MainWindow::on_movePolygonVertexButton_clicked()
 
 void MainWindow::on_actionSave_triggered()
 {
-    /*
-    auto fileName = QFileDialog::getSaveFileName(this, tr("Save Your Project"), "", tr("Project File(*.json);;All Files (*)"));
+    auto fileName = QFileDialog::getSaveFileName(this, tr("Save Your Project"), "",
+                                                 tr("Project File(*.json);;All Files (*)"));
     if (fileName.isEmpty())
         return;
 
     json j;
-    for (auto &shape : scene->shapes) {
+    for (auto &shape : sceneQWidget->shapes)
         j.push_back(shape->getJsonFormat());
-    }
 
     std::ofstream file(fileName.toStdString());
-        file << j;*/
+    file << j;
+}
+
+void MainWindow::on_actionLoad_triggered()
+{
+    auto fileName = QFileDialog::getOpenFileName(this, tr("Open Image"), "", tr("Image Files (*.json)"));
+    if (fileName.isEmpty())
+        return;
+
+    std::ifstream i(fileName.toStdString());
+    json j;
+    i >> j;
+
+    qDebug() << "wczytano";
+
+    sceneQWidget->shapes.clear();
+
+    for (auto &shape : j) {
+        std::unique_ptr<IShape> current = nullptr;
+        if (shape["shape"] == "circle") {
+            current = std::make_unique<MyCircle>(shape["X"], shape["Y"], shape["radius"]);
+        } else if (shape["shape"] == "line") {
+            current = std::make_unique<MyLine>(shape["x1"], shape["y1"], shape["x2"], shape["y2"]);
+        } else if (shape["shape"] == "pizza") {
+            current = std::make_unique<myPizza>(shape["pA"], shape["pB"], shape["pC"]);
+        } else if (shape["shape"] == "polygon") {
+            current = std::make_unique<myPolygon>(shape["points"]);
+            myPolygon* tmpPolygon = dynamic_cast<myPolygon*>(current.get());
+            tmpPolygon->setFinished();
+        } else if (shape["shape"] == "rectangle") {
+            current = std::make_unique<myRectangle>(shape["firstPoint"], shape["secondPoint"]);
+        }
+
+        if (shape["shape"] == "rectangle" || shape["shape"] == "polygon") {
+            myPolygon* tmpPolygon = dynamic_cast<myPolygon*>(current.get());
+            tmpPolygon->isFilled = shape["isFilled"];
+            tmpPolygon->isFilledWithColor = shape["isFilledWithColor"];
+            tmpPolygon->fillingColor = QColor(shape["fillingColor"][0], shape["fillingColor"][1], shape["fillingColor"][2]);
+
+            tmpPolygon->isFilledWithImage = shape["isFilledWithImage"];
+            if (tmpPolygon->isFilledWithImage) {
+                qDebug() << shape["fillingImage"].size();
+                QByteArray ba;
+                //ba = shape["fillingImage"];
+                //for (auto elem: shape["fillingImage"])
+                  //  ba.append(elem);
+                //tmpPolygon->fillingImage = QImage(ba);
+            }
+        }
+
+        if (current == nullptr)
+            continue;
+
+        current->setColor(QColor(shape["color"][0], shape["color"][1], shape["color"][2]));
+        current->thickness = shape["thickness"];
+        sceneQWidget->shapes.push_back(std::move(current));
+    }
+
+    sceneQWidget->update();
 }

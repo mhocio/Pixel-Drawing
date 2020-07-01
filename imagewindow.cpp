@@ -36,7 +36,7 @@ bool operator!=(const PixelWithColor& lhs, const PixelWithColor& rhs)
 
 void ImageWindow::TurnOnOffAntiAliasing() {
     antiAliased_mode = !antiAliased_mode;
-    update();
+    repaint();
 }
 
 void ImageWindow::paintEvent(QPaintEvent*) {
@@ -164,7 +164,7 @@ void ImageWindow::mouseMoveEvent(QMouseEvent * mouseEvent) {
 
     if (needToUpdate) {
         //mode = NONE;
-        update();
+        repaint();
         newShape = false;
     }
 }
@@ -274,7 +274,7 @@ void ImageWindow::mousePressEvent(QMouseEvent * mouseEvent) {
             pizzaPointNumber = 0;
 
             shapes.push_back(std::move(tmpPizza));
-            update();
+            repaint();
             tmpPizza = nullptr;
 
             qDebug() << Q_FUNC_INFO << "ADD PIZZA";
@@ -370,7 +370,7 @@ void ImageWindow::mouseReleaseEvent(QMouseEvent * mouseEvent) {
 
     if (needToUpdate) {
         //mode = NONE;
-        update();
+        repaint();
         newShape = false;
     }
 }
@@ -384,7 +384,7 @@ void ImageWindow::endDrawingPolygon() {
             shapes.push_back(std::move(tmpPolygon));
         }
         tmpPolygon = nullptr;
-        update();
+        repaint();
         newShape = false;
         mode = NONE;
     }
@@ -395,7 +395,7 @@ void ImageWindow::addPolygon() {
         tmpPolygon->setThickness(brushThickness);
         shapes.push_back(std::move(tmpPolygon));
         tmpPolygon = nullptr;
-        update();
+        repaint();
         newShape = false;
         mode = NONE;
     }
@@ -416,7 +416,7 @@ void ImageWindow::updateShapeColor(QListWidgetItem* item, QColor color) {
     for (const auto &shape : shapes) {
         if (shape->ToString() == item->text().toStdString()) {
             shape->setColor(color);
-            update();
+            repaint();
             break;
         }
     }
@@ -432,7 +432,7 @@ void ImageWindow::fillPolygon(QListWidgetItem* item, QColor color) {
             }
 
             poly->setFilled(color);
-            update();
+            repaint();
         }
     }
 }
@@ -447,7 +447,7 @@ void ImageWindow::fillPolygon(QListWidgetItem* item, QImage image) {
             }
 
             poly->setFilled(image);
-            update();
+            repaint();
         }
     }
 }
@@ -456,7 +456,7 @@ void ImageWindow::deleteShape(QListWidgetItem* item) {
     for (const auto &shape : shapes) {
         if (shape->ToString() == item->text().toStdString()) {
             shapes.erase(std::remove(shapes.begin(), shapes.end(), shape), shapes.end());
-            update();
+            repaint();
             break;
         }
     }
@@ -466,7 +466,7 @@ void ImageWindow::setShapeThickness(QListWidgetItem*item, int thickness) {
     for (const auto &shape : shapes) {
         if (shape->ToString() == item->text().toStdString()) {
             shape->setThickness(thickness);
-            update();
+            repaint();
             break;
         }
     }
@@ -509,7 +509,7 @@ void ImageWindow::createNewPolygon(QListWidgetItem* clipBoundaryPolygon, QListWi
         newPoly->setFinished();
 
         shapes.push_back(std::move(newPoly));
-        update();
+        repaint();
     }
 }
 
@@ -539,7 +539,7 @@ QString ImageWindow::getMode() {
 
 void ImageWindow::deleteAllShapes() {
     shapes.clear();
-    update();
+    repaint();
 }
 
 void ImageWindow::setModeDrawLine() {

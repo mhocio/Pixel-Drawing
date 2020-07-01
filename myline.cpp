@@ -26,4 +26,13 @@ std::string MyLine::ToString() const {
     return s;
 }
 
+json MyLine::getJsonFormat() {
+    json item = getIShapeJson();
+    item["shape"] = "line";
+    item["x1"] = x1;
+    item["y1"] = y1;
+    item["x2"] = x2;
+    item["y2"] = y2;
 
+    return item;
+}

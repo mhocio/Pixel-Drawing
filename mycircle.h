@@ -12,6 +12,7 @@ public:
     int X, Y, radius;
 
     std::string ToString() const override;
+    json getJsonFormat() override;
 
     std::vector<PixelWithColor> getPixels() override {
         std::vector<PixelWithColor> pixels;
@@ -84,8 +85,6 @@ public:
                 pixels.push_back(PixelWithColor(-y + x_centre, -x + y_centre, R, G, B));
             }
         }*/
-
-        //qDebug() << "R: " << R << " G: " << G << " B: " << B ;
 
         return pixels;
     }
