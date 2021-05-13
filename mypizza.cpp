@@ -54,91 +54,42 @@ std::vector<PixelWithColor> myPizza::getPixels() {
     int X = pA.first;
     int Y = pA.second;
 
-    std::pair<int, int> pD;
+    //std::pair<int, int> pD;
 
     MyLine line = MyLine(X, Y, pB.first, pB.second);
     std::vector<PixelWithColor> newPixels = line.getPixels();
     pixels.insert(pixels.end(), newPixels.begin(), newPixels.end());
 
+// shortening the second line TODO
+//    double d = std::sqrt((X-pC.first)*(X-pC.first) + (Y-pC.second)*(Y-pC.second));
+//    double b = std::sqrt((1 - (dx*dx)/(dy*dy)) * d*d);
+//    double a = a*dy/b;
+
     line = MyLine(X, Y, pC.first, pC.second);
     newPixels = line.getPixels();
     pixels.insert(pixels.end(), newPixels.begin(), newPixels.end());
 
-    while (x >= y)
-    {
-        if (det(pA, pB, pC) > 0) {
-            //pixels.push_back(PixelWithColor(X + x, Y + y, R, G, B));
+    while (x >= y) {
+        std::vector<std::pair<int, int> > octants;
+        octants.push_back(std::make_pair(X + x, Y + y));
+        octants.push_back(std::make_pair(X + y, Y + x));
+        octants.push_back(std::make_pair(X - y, Y + x));
+        octants.push_back(std::make_pair(X - x, Y + y));
+        octants.push_back(std::make_pair(X - x, Y - y));
+        octants.push_back(std::make_pair(X - y, Y - x));
+        octants.push_back(std::make_pair(X + y, Y - x));
+        octants.push_back(std::make_pair(X + x, Y - y));
 
-            pD.first = X + x; pD.second = Y + y;
-            if (det(pA, pB, pD) > 0 && det(pA, pC, pD) < 0)
-                pixels.push_back(PixelWithColor(pD.first, pD.second, R, G, B));
-
-            //pixels.push_back(PixelWithColor(X + y, Y + x, R, G, B));
-            pD.first = X + y; pD.second = Y + x;
-            if (det(pA, pB, pD) > 0 && det(pA, pC, pD) < 0)
-                pixels.push_back(PixelWithColor(pD.first, pD.second, R, G, B));
-
-            //pixels.push_back(PixelWithColor(X - y, Y + x, R, G, B));
-            pD.first = X - y; pD.second = Y + x;
-            if (det(pA, pB, pD) > 0 && det(pA, pC, pD) < 0)
-                pixels.push_back(PixelWithColor(pD.first, pD.second, R, G, B));
-
-            //pixels.push_back(PixelWithColor(X - x, Y + y, R, G, B));
-            pD.first = X - x; pD.second = Y + y;
-            if (det(pA, pB, pD) > 0 && det(pA, pC, pD) < 0)
-                pixels.push_back(PixelWithColor(pD.first, pD.second, R, G, B));
-
-            //pixels.push_back(PixelWithColor(X - x, Y - y, R, G, B));
-            pD.first = X - x; pD.second = Y - y;
-            if (det(pA, pB, pD) > 0 && det(pA, pC, pD) < 0)
-                pixels.push_back(PixelWithColor(pD.first, pD.second, R, G, B));
-
-            //pixels.push_back(PixelWithColor(X - y, Y - x, R, G, B));
-            pD.first = X - y; pD.second = Y - x;
-            if (det(pA, pB, pD) > 0 && det(pA, pC, pD) < 0)
-                pixels.push_back(PixelWithColor(pD.first, pD.second, R, G, B));
-
-            //pixels.push_back(PixelWithColor(X + y, Y - x, R, G, B));
-            pD.first = X + y; pD.second = Y - x;
-            if (det(pA, pB, pD) > 0 && det(pA, pC, pD) < 0)
-                pixels.push_back(PixelWithColor(pD.first, pD.second, R, G, B));
-
-            //pixels.push_back(PixelWithColor(X + x, Y - y, R, G, B));
-            pD.first = X + x; pD.second = Y - y;
-            if (det(pA, pB, pD) > 0 && det(pA, pC, pD) < 0)
-                pixels.push_back(PixelWithColor(pD.first, pD.second, R, G, B));
-        } else {
-            pD.first = X + x; pD.second = Y + y;
-            if (det(pA, pB, pD) > 0 || det(pA, pC, pD) < 0)
-                pixels.push_back(PixelWithColor(pD.first, pD.second, R, G, B));
-
-            pD.first = X + y; pD.second = Y + x;
-            if (det(pA, pB, pD) > 0 || det(pA, pC, pD) < 0)
-                pixels.push_back(PixelWithColor(pD.first, pD.second, R, G, B));
-
-            pD.first = X - y; pD.second = Y + x;
-            if (det(pA, pB, pD) > 0 || det(pA, pC, pD) < 0)
-                pixels.push_back(PixelWithColor(pD.first, pD.second, R, G, B));
-
-            pD.first = X - x; pD.second = Y + y;
-            if (det(pA, pB, pD) > 0 || det(pA, pC, pD) < 0)
-                pixels.push_back(PixelWithColor(pD.first, pD.second, R, G, B));
-
-            pD.first = X - x; pD.second = Y - y;
-            if (det(pA, pB, pD) > 0 || det(pA, pC, pD) < 0)
-                pixels.push_back(PixelWithColor(pD.first, pD.second, R, G, B));
-
-            pD.first = X - y; pD.second = Y - x;
-            if (det(pA, pB, pD) > 0 || det(pA, pC, pD) < 0)
-                pixels.push_back(PixelWithColor(pD.first, pD.second, R, G, B));
-
-            pD.first = X + y; pD.second = Y - x;
-            if (det(pA, pB, pD) > 0 || det(pA, pC, pD) < 0)
-                pixels.push_back(PixelWithColor(pD.first, pD.second, R, G, B));
-
-            pD.first = X + x; pD.second = Y - y;
-            if (det(pA, pB, pD) > 0 || det(pA, pC, pD) < 0)
-                pixels.push_back(PixelWithColor(pD.first, pD.second, R, G, B));
+        for(auto p : octants) {
+            if (det(pA, pB, pC) > 0) {
+                if (det(pA, pB, p) > 0 && det(pA, pC, p) < 0) {
+                    pixels.push_back(PixelWithColor(p.first, p.second, R, G, B));
+                }
+            } else {
+                if (det(pA, pB, p) > 0 || det(pA, pC, p) < 0) {
+                    pixels.push_back(PixelWithColor(p.first, p.second, R, G, B));
+                }
+            }
         }
 
         if (err <= 0) {

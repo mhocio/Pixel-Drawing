@@ -4,6 +4,7 @@
 #include <cmath>
 #include "ishape.h"
 #include "myline.h"
+#include <qdebug.h>
 
 class myPizza : public IShape
 {
