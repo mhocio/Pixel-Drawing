@@ -31,6 +31,7 @@ SOURCES += \
     sutherlandhodgman.cpp
 
 HEADERS += \
+    HelloThread.h \
     aet.h \
     aetnode.h \
     imagewindow.h \

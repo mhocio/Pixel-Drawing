@@ -20,6 +20,8 @@ MainWindow::MainWindow(QWidget *parent)
     qDebug() << ui->verticalFramePaint->width() << " " << ui->verticalFramePaint->height();
 
     sceneQWidget->show();
+
+    //sceneQWidget->run();
 }
 
 void MainWindow::updateStatusBar() {

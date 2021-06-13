@@ -24,6 +24,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
+    ImageWindow *sceneQWidget;
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     Ui::MainWindow *ui;
@@ -87,7 +88,6 @@ private slots:
     void on_actionLoad_triggered();
 
 private:
-    ImageWindow *sceneQWidget;
 
     QListWidgetItem *clipBoundaryPolygon = nullptr;
     QListWidgetItem *polygonToClip = nullptr;

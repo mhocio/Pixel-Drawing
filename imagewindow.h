@@ -11,9 +11,13 @@
 #include <QGuiApplication>
 #include <QMessageBox>
 #include <QPixmap>
+#include <QElapsedTimer>
+#include <QTimer>
+//#include "HelloThread.h"
 
 #include <cmath>
 #include <string.h>
+#include <thread>
 
 #include "myline.h"
 #include "mycircle.h"
@@ -22,7 +26,23 @@
 #include "sutherlandhodgman.h"
 #include <myrectangle.h>
 
-//class MainWindow;
+//class MainWindow
+
+struct vec3d {
+    float x, y, z;
+};
+
+struct triangle {
+    vec3d p[3];
+};
+
+struct mesh {
+    std::vector<triangle> tri;
+};
+
+struct mat4x4 {
+    float m[4][4] = {0};
+};
 
 class ImageWindow : public QWidget
 {
@@ -86,7 +106,34 @@ public:
 
     void TurnOnOffAntiAliasing();
 
+    ////////
+
+//    void run() {
+//        while(true) {
+//            //QTimer *timer = new QTimer(this);
+//            //connect(timer, SIGNAL(timeout()), this, SLOT(update()));
+//            //timer->start(16);
+//            fElapsedTime++;
+//            repaint();
+//            //wait(1);
+//        }
+//    }
+    void _repaint() {
+        repaint();
+    }
+    float fElapsedTime = 0;
+
 private:
+    mesh meshCube;
+    mat4x4 matProj;
+    void drawTriangle(int x1, int y1, int x2, int y2, int x3, int y3);
+    int _width = 700;
+    int _height = 700;
+    float fTheta = 0;
+
+    //void foo(int Z);
+
+    //////
     QImage image;
     enum drawMode
     {
